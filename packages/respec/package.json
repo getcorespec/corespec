@@ -1,0 +1,41 @@
+{
+  "name": "@gaspodewonder/respec",
+  "version": "0.0.1",
+  "description": "Retroactive spec generation and verification for existing codebases",
+  "keywords": ["respec", "specs", "cli", "ai", "sdd"],
+  "homepage": "https://github.com/gaspodewonder/jspec/tree/main/packages/respec",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gaspodewonder/jspec",
+    "directory": "packages/respec"
+  },
+  "license": "MIT",
+  "author": "gaspodewonder",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "respec": "./bin/respec.js"
+  },
+  "files": ["dist", "bin", "!dist/**/*.test.js", "!dist/**/*.map"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
+  }
+}

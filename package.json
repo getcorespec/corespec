@@ -1,0 +1,16 @@
+{
+  "name": "jspec",
+  "private": true,
+  "description": "Spec-driven development tools — retroactive spec generation and PR gating",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gaspodewonder/jspec"
+  },
+  "license": "MIT",
+  "author": "gaspodewonder",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@9.15.4"
+}

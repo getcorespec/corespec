@@ -16,6 +16,8 @@ Shared foundation library. Spec framework detection, LLM integration, GitHub API
 
 PR gating for specs. Checks that code changes have an associated specification before merge. Built on corespec.
 
+![specguard check output](./packages/specguard/docs/screenshots/specguard-check-fail.png)
+
 ### [respec](./packages/respec/)
 
 Retroactive spec generation. Analyzes existing code and PRs to generate structured specifications. Built on corespec.

@@ -25,6 +25,8 @@ Check spec coverage on a PR:
 specguard check
 ```
 
+![specguard check output](./docs/screenshots/specguard-check-fail.png)
+
 ## Documentation
 
 Coming soon.

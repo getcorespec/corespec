@@ -30,6 +30,7 @@
   },
   "engines": { "node": ">=20" },
   "dependencies": {
+    "@gaspodewonder/corespec": "workspace:*",
     "chalk": "^5.4.1",
     "commander": "^13.1.0"
   },

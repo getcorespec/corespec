@@ -57,6 +57,9 @@ importers:
 
   packages/specguard:
     dependencies:
+      '@gaspodewonder/corespec':
+        specifier: workspace:*
+        version: link:../corespec
       chalk:
         specifier: ^5.4.1
         version: 5.6.2

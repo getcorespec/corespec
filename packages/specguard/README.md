@@ -70,3 +70,5 @@ jobs:
 ```
 
 See it in action: [demo PR with specguard failing unspec'd code](https://github.com/getcorespec/corespec/pull/3)
+
+![specguard failing a PR](./docs/screenshots/failed-pr.png)

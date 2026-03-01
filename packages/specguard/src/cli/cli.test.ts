@@ -20,4 +20,21 @@ describe('specguard CLI', () => {
     });
     expect(output).toContain('specguard');
   });
+
+  it('shows check command in help', () => {
+    const output = execFileSync('node', [bin, '--help'], {
+      encoding: 'utf-8',
+    });
+    expect(output).toContain('check');
+  });
+
+  it('shows check subcommand help', () => {
+    const output = execFileSync('node', [bin, 'check', '--help'], {
+      encoding: 'utf-8',
+    });
+    expect(output).toContain('diff-range');
+    expect(output).toContain('--threshold');
+    expect(output).toContain('--model');
+    expect(output).toContain('--output');
+  });
 });

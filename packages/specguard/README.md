@@ -68,3 +68,5 @@ jobs:
         with:
           anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
 ```
+
+See it in action: [demo PR with specguard failing unspec'd code](https://github.com/getcorespec/corespec/pull/3)

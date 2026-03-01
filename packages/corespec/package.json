@@ -1,0 +1,41 @@
+{
+  "name": "@gaspodewonder/corespec",
+  "version": "0.0.1",
+  "description": "Shared spec tooling foundation — framework detection, LLM integration, common utilities",
+  "keywords": ["corespec", "specs", "ai", "sdd"],
+  "homepage": "https://github.com/gaspodewonder/jspec/tree/main/packages/corespec",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gaspodewonder/jspec",
+    "directory": "packages/corespec"
+  },
+  "license": "MIT",
+  "author": "gaspodewonder",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "!dist/**/*.test.js", "!dist/**/*.map"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "ai": "^6.0.105",
+    "@ai-sdk/anthropic": "^3.0.50",
+    "@ai-sdk/openai": "^3.0.37",
+    "glob": "^11.0.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
+  }
+}

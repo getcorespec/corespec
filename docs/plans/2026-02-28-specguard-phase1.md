@@ -28,10 +28,10 @@
   "version": "0.0.1",
   "description": "Shared spec tooling foundation — framework detection, LLM integration, common utilities",
   "keywords": ["corespec", "specs", "ai", "sdd"],
-  "homepage": "https://github.com/gaspodewonder/jspec/tree/main/packages/corespec",
+  "homepage": "https://github.com/gaspodewonder/corespec/tree/main/packages/corespec",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gaspodewonder/jspec",
+    "url": "https://github.com/gaspodewonder/corespec",
     "directory": "packages/corespec"
   },
   "license": "MIT",
@@ -174,7 +174,7 @@ export type {
 ```markdown
 # corespec
 
-Shared spec tooling foundation for [jspec](https://github.com/gaspodewonder/jspec).
+Shared spec tooling foundation for [corespec](https://github.com/gaspodewonder/corespec).
 
 ## Tools
 
@@ -195,13 +195,13 @@ Used by [@gaspodewonder/specguard](../specguard/) and [@gaspodewonder/respec](..
 **Step 7: Install dependencies**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec && pnpm install
+cd /Users/Dave_Kerr/repos/github/gdog/corespec && pnpm install
 ```
 
 **Step 8: Build and verify**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec/packages/corespec && pnpm build
+cd /Users/Dave_Kerr/repos/github/gdog/corespec/packages/corespec && pnpm build
 ```
 
 Expected: clean compile, no errors.
@@ -315,7 +315,7 @@ describe('checkFramework', () => {
 **Step 2: Run test to verify it fails**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec/packages/corespec && pnpm build && pnpm test
+cd /Users/Dave_Kerr/repos/github/gdog/corespec/packages/corespec && pnpm build && pnpm test
 ```
 
 Expected: FAIL — `checkFramework` not found.
@@ -448,7 +448,7 @@ export { checkFramework } from './tools/check-framework.js';
 **Step 5: Build and run tests**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec/packages/corespec && pnpm build && pnpm test
+cd /Users/Dave_Kerr/repos/github/gdog/corespec/packages/corespec && pnpm build && pnpm test
 ```
 
 Expected: all 6 tests PASS.
@@ -505,7 +505,7 @@ describe('parseModelId', () => {
 **Step 2: Run test to verify it fails**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec/packages/corespec && pnpm build && pnpm test
+cd /Users/Dave_Kerr/repos/github/gdog/corespec/packages/corespec && pnpm build && pnpm test
 ```
 
 Expected: FAIL.
@@ -573,7 +573,7 @@ export { parseModelId, callLLM } from './llm/provider.js';
 **Step 5: Build and run tests**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec/packages/corespec && pnpm build && pnpm test
+cd /Users/Dave_Kerr/repos/github/gdog/corespec/packages/corespec && pnpm build && pnpm test
 ```
 
 Expected: all tests PASS (provider tests don't call real LLM).
@@ -679,7 +679,7 @@ describe('judgeFramework', () => {
 **Step 2: Run test to verify it fails**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec/packages/corespec && pnpm build && pnpm test
+cd /Users/Dave_Kerr/repos/github/gdog/corespec/packages/corespec && pnpm build && pnpm test
 ```
 
 Expected: FAIL — `judgeFramework` not found.
@@ -748,7 +748,7 @@ export { judgeFramework } from './tools/judge-framework.js';
 **Step 5: Build and run tests**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec/packages/corespec && pnpm build && pnpm test
+cd /Users/Dave_Kerr/repos/github/gdog/corespec/packages/corespec && pnpm build && pnpm test
 ```
 
 Expected: all tests PASS.
@@ -876,7 +876,7 @@ describe('judgeDiff', () => {
 **Step 2: Run test to verify it fails**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec/packages/corespec && pnpm build && pnpm test
+cd /Users/Dave_Kerr/repos/github/gdog/corespec/packages/corespec && pnpm build && pnpm test
 ```
 
 Expected: FAIL — `judgeDiff` not found.
@@ -959,7 +959,7 @@ export { judgeDiff } from './tools/judge-diff.js';
 **Step 5: Build and run tests**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec/packages/corespec && pnpm build && pnpm test
+cd /Users/Dave_Kerr/repos/github/gdog/corespec/packages/corespec && pnpm build && pnpm test
 ```
 
 Expected: all tests PASS.
@@ -1054,7 +1054,7 @@ describe('loadConfig', () => {
 **Step 2: Run test to verify it fails**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec/packages/specguard && pnpm build && pnpm test
+cd /Users/Dave_Kerr/repos/github/gdog/corespec/packages/specguard && pnpm build && pnpm test
 ```
 
 Expected: FAIL.
@@ -1124,12 +1124,12 @@ Update `packages/specguard/package.json` — add to dependencies:
 "@gaspodewonder/corespec": "workspace:*"
 ```
 
-Run: `cd /Users/Dave_Kerr/repos/github/gdog/jspec && pnpm install`
+Run: `cd /Users/Dave_Kerr/repos/github/gdog/corespec && pnpm install`
 
 **Step 5: Build and run tests**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec && pnpm -r build && cd packages/specguard && pnpm test
+cd /Users/Dave_Kerr/repos/github/gdog/corespec && pnpm -r build && cd packages/specguard && pnpm test
 ```
 
 Expected: all tests PASS.
@@ -1269,7 +1269,7 @@ describe('formatHuman', () => {
 **Step 3: Run tests to verify they fail**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec/packages/specguard && pnpm build && pnpm test
+cd /Users/Dave_Kerr/repos/github/gdog/corespec/packages/specguard && pnpm build && pnpm test
 ```
 
 Expected: FAIL.
@@ -1385,7 +1385,7 @@ export function formatHuman(result: PipelineResult): string {
 **Step 6: Build and run tests**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec && pnpm -r build && cd packages/specguard && pnpm test
+cd /Users/Dave_Kerr/repos/github/gdog/corespec && pnpm -r build && cd packages/specguard && pnpm test
 ```
 
 Expected: all tests PASS.
@@ -1456,7 +1456,7 @@ describe('specguard CLI', () => {
 **Step 2: Run test to verify it fails**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec/packages/specguard && pnpm build && pnpm test
+cd /Users/Dave_Kerr/repos/github/gdog/corespec/packages/specguard && pnpm build && pnpm test
 ```
 
 Expected: FAIL — check command not registered.
@@ -1545,7 +1545,7 @@ program.parse();
 **Step 5: Build and run tests**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec && pnpm -r build && cd packages/specguard && pnpm test
+cd /Users/Dave_Kerr/repos/github/gdog/corespec && pnpm -r build && cd packages/specguard && pnpm test
 ```
 
 Expected: all tests PASS.
@@ -1564,7 +1564,7 @@ git commit -m "feat(specguard): wire up check command with pipeline"
 **Step 1: Run full build and test from root**
 
 ```bash
-cd /Users/Dave_Kerr/repos/github/gdog/jspec && pnpm -r build && pnpm -r test
+cd /Users/Dave_Kerr/repos/github/gdog/corespec && pnpm -r build && pnpm -r test
 ```
 
 Expected: all packages build clean, all tests pass.
@@ -1597,19 +1597,19 @@ Pick a repo with specs (e.g. one with OpenSpec or a specs/ directory) and run:
 
 ```bash
 cd /path/to/test-repo
-ANTHROPIC_API_KEY=sk-ant-... node /path/to/jspec/packages/specguard/bin/specguard.js check main..HEAD
+ANTHROPIC_API_KEY=sk-ant-... node /path/to/corespec/packages/specguard/bin/specguard.js check main..HEAD
 ```
 
 **Step 2: Test JSON output**
 
 ```bash
-ANTHROPIC_API_KEY=sk-ant-... node /path/to/jspec/packages/specguard/bin/specguard.js check main..HEAD --output json
+ANTHROPIC_API_KEY=sk-ant-... node /path/to/corespec/packages/specguard/bin/specguard.js check main..HEAD --output json
 ```
 
 **Step 3: Test with different model**
 
 ```bash
-OPENAI_API_KEY=sk-... node /path/to/jspec/packages/specguard/bin/specguard.js check main..HEAD --model openai/gpt-4o
+OPENAI_API_KEY=sk-... node /path/to/corespec/packages/specguard/bin/specguard.js check main..HEAD --model openai/gpt-4o
 ```
 
 **Step 4: Verify exit codes**

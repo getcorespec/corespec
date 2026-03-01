@@ -1,10 +1,10 @@
-# jspec - Research
+# corespec - Research
 
-## What is jspec?
+## What is corespec?
 
-jspec is **spec validation + retroactive functional spec generation** for existing codebases. Packages: `@gaspodewonder/respec` and `@gaspodewonder/specguard`.
+corespec is **spec validation + retroactive functional spec generation** for existing codebases. Packages: `@gaspodewonder/respec` and `@gaspodewonder/specguard`.
 
-Existing SDD tools are **spec-first** (write specs, then code). jspec is **code-first** (analyze existing code/PRs, generate or verify specs retroactively).
+Existing SDD tools are **spec-first** (write specs, then code). corespec is **code-first** (analyze existing code/PRs, generate or verify specs retroactively).
 
 ## SDD Landscape
 
@@ -36,7 +36,7 @@ Martin Fowler notes all SDD tools are "mostly spec-first and vague about spec ma
 
 **"specguard"** — no dev tooling use exists. Two academic uses: robotic vehicle security (UBC/CCS 2024) and computer vision (ICCV 2025). Name is fully available for dev tools. Works as a companion tool for PR gating.
 
-**"jspec"** — monorepo name grouping both tools under `gaspodewonder/jspec`.
+**"corespec"** — monorepo name grouping both tools under `gaspodewonder/corespec`.
 
 ## Sources
 

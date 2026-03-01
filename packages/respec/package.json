@@ -9,10 +9,10 @@
     "ai",
     "sdd"
   ],
-  "homepage": "https://github.com/gaspodewonder/jspec/tree/main/packages/respec",
+  "homepage": "https://github.com/gaspodewonder/corespec/tree/main/packages/respec",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gaspodewonder/jspec",
+    "url": "https://github.com/gaspodewonder/corespec",
     "directory": "packages/respec"
   },
   "license": "MIT",

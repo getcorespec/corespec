@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "description": "Shared spec tooling foundation — framework detection, LLM integration, common utilities",
   "keywords": ["corespec", "specs", "ai", "sdd"],
-  "homepage": "https://github.com/gaspodewonder/jspec/tree/main/packages/corespec",
+  "homepage": "https://github.com/gaspodewonder/corespec/tree/main/packages/corespec",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gaspodewonder/jspec",
+    "url": "https://github.com/gaspodewonder/corespec",
     "directory": "packages/corespec"
   },
   "license": "MIT",

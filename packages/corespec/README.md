@@ -1,6 +1,6 @@
 # corespec
 
-Shared spec tooling foundation for [jspec](https://github.com/gaspodewonder/jspec).
+Shared spec tooling foundation for [corespec](https://github.com/gaspodewonder/corespec).
 
 ## Tools
 

@@ -168,7 +168,7 @@ Provider is inferred from the model string. API key from matching env var.
 ## GitHub Action
 
 ```yaml
-- uses: gaspodewonder/jspec/packages/specguard@v1
+- uses: gaspodewonder/corespec/packages/specguard@v1
   with:
     threshold: '0.7'
   env:

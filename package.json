@@ -1,10 +1,10 @@
 {
-  "name": "jspec",
+  "name": "corespec",
   "private": true,
   "description": "Spec-driven development tools — retroactive spec generation and PR gating",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gaspodewonder/jspec"
+    "url": "https://github.com/gaspodewonder/corespec"
   },
   "license": "MIT",
   "author": "gaspodewonder",

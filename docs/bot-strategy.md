@@ -1,6 +1,6 @@
 # Bot / GitHub App Strategy
 
-Research for jspec (respec + specguard) bot deployment.
+Research for corespec (respec + specguard) bot deployment.
 
 ## 1. Framework Comparison
 
@@ -34,7 +34,7 @@ Use the same underlying libraries Probot uses, without the framework layer.
 | Edge/Workers | `@octokit/webhooks` works in Workers with minor adjustments (PKCS8 key format for WebCrypto). `@octokit/app` has a `createNodeMiddleware` but the core classes are runtime-agnostic. |
 | Bundle size | Much lighter — only import what you need |
 
-**Verdict:** Right choice for jspec. We control the HTTP layer. Easy to swap hosting. Aligns with our TypeScript-first, ESM-first project setup.
+**Verdict:** Right choice for corespec. We control the HTTP layer. Easy to swap hosting. Aligns with our TypeScript-first, ESM-first project setup.
 
 ### Option C: Raw Webhooks (no framework)
 
@@ -106,7 +106,7 @@ Probot is a framework over these same libraries. We skip the framework, keep the
 | Secrets | Encrypted environment variables via `wrangler secret` |
 | State | KV store for simple key-value. Durable Objects for stateful logic. |
 | Gotchas | Private key must be PKCS8 format for WebCrypto. Some npm packages won't work. CPU time limit (10-50ms per invocation on free tier). LLM calls that take seconds need a different pattern (queue + response). |
-| Fit for jspec | **Poor for the core bot.** Our webhook handler calls an LLM (seconds of wall time). Workers are designed for fast edge responses, not long-running LLM calls. Would need Workers + Queues + a separate compute backend. Over-engineered for our needs. |
+| Fit for corespec | **Poor for the core bot.** Our webhook handler calls an LLM (seconds of wall time). Workers are designed for fast edge responses, not long-running LLM calls. Would need Workers + Queues + a separate compute backend. Over-engineered for our needs. |
 
 ### Vercel Functions
 
@@ -118,7 +118,7 @@ Probot is a framework over these same libraries. We skip the framework, keep the
 | Runtime | Full Node.js runtime |
 | Secrets | Environment variables in dashboard, encrypted at rest |
 | Time limit | 10s (Hobby), 60s (Pro), 300s (Enterprise) |
-| Fit for jspec | **Possible but tight.** LLM calls could exceed the 10s Hobby limit. Pro's 60s limit would work. But Vercel is frontend-focused — using it for a pure webhook backend feels awkward. No persistent process for future features (websockets, queuing). |
+| Fit for corespec | **Possible but tight.** LLM calls could exceed the 10s Hobby limit. Pro's 60s limit would work. But Vercel is frontend-focused — using it for a pure webhook backend feels awkward. No persistent process for future features (websockets, queuing). |
 
 ### Railway
 
@@ -131,7 +131,7 @@ Probot is a framework over these same libraries. We skip the framework, keep the
 | Secrets | Environment variables per service, encrypted |
 | Time limit | None — long-running process |
 | Deploys | Git push to deploy, preview environments |
-| Fit for jspec | **Good fit.** Always-on server handles long LLM calls naturally. Simple deployment. Reasonable cost. No runtime restrictions. Easy to add a database later if needed. |
+| Fit for corespec | **Good fit.** Always-on server handles long LLM calls naturally. Simple deployment. Reasonable cost. No runtime restrictions. Easy to add a database later if needed. |
 
 ### Self-hosted (Docker / VPS)
 
@@ -141,7 +141,7 @@ Probot is a framework over these same libraries. We skip the framework, keep the
 | Control | Total |
 | Runtime | Full Node.js, no limits |
 | Ops burden | SSL, uptime monitoring, updates, scaling — all manual |
-| Fit for jspec | **Fine for personal use, bad for a product.** Too much ops work. Only makes sense if we want to offer self-hosting as a deployment option for users. |
+| Fit for corespec | **Fine for personal use, bad for a product.** Too much ops work. Only makes sense if we want to offer self-hosting as a deployment option for users. |
 
 ### Recommendation: Railway (primary), with self-hosted Docker as a user option
 

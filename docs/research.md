@@ -2,7 +2,7 @@
 
 ## What is corespec?
 
-corespec is **spec validation + retroactive functional spec generation** for existing codebases. Packages: `@gaspodewonder/respec` and `@gaspodewonder/specguard`.
+corespec is **spec validation + retroactive functional spec generation** for existing codebases. Packages: `@getcorespec/respec` and `@getcorespec/specguard`.
 
 Existing SDD tools are **spec-first** (write specs, then code). corespec is **code-first** (analyze existing code/PRs, generate or verify specs retroactively).
 
@@ -32,11 +32,11 @@ Martin Fowler notes all SDD tools are "mostly spec-first and vague about spec ma
 
 ## Name Availability
 
-**"respec"** — taken by W3C ReSpec (HTML preprocessor for standards docs) and go-respec (small Go OpenAPI CLI). Both unrelated domains. `@gaspodewonder/respec` is available.
+**"respec"** — taken by W3C ReSpec (HTML preprocessor for standards docs) and go-respec (small Go OpenAPI CLI). Both unrelated domains. `@getcorespec/respec` is available.
 
 **"specguard"** — no dev tooling use exists. Two academic uses: robotic vehicle security (UBC/CCS 2024) and computer vision (ICCV 2025). Name is fully available for dev tools. Works as a companion tool for PR gating.
 
-**"corespec"** — monorepo name grouping both tools under `gaspodewonder/corespec`.
+**"corespec"** — monorepo name grouping both tools under `getcorespec/corespec`.
 
 ## Sources
 

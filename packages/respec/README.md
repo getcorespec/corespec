@@ -6,8 +6,8 @@
     <a href="#documentation">Documentation</a>
   </p>
   <p align="center">
-    <a href="https://github.com/gaspodewonder/corespec/actions/workflows/cicd.yaml"><img src="https://github.com/gaspodewonder/corespec/actions/workflows/cicd.yaml/badge.svg" alt="cicd"></a>
-    <a href="https://www.npmjs.com/package/@gaspodewonder/respec"><img src="https://img.shields.io/npm/v/%40gaspodewonder/respec" alt="npm version"></a>
+    <a href="https://github.com/getcorespec/corespec/actions/workflows/cicd.yaml"><img src="https://github.com/getcorespec/corespec/actions/workflows/cicd.yaml/badge.svg" alt="cicd"></a>
+    <a href="https://www.npmjs.com/package/@getcorespec/respec"><img src="https://img.shields.io/npm/v/%40getcorespec/respec" alt="npm version"></a>
   </p>
 </p>
 
@@ -16,7 +16,7 @@
 Install respec:
 
 ```bash
-npm install -g @gaspodewonder/respec
+npm install -g @getcorespec/respec
 ```
 
 Generate specs from an existing codebase:

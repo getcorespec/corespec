@@ -1,5 +1,5 @@
 {
-  "name": "@gaspodewonder/specguard",
+  "name": "@getcorespec/specguard",
   "version": "0.0.1",
   "description": "PR gating for spec coverage — checks that code changes have associated specs",
   "keywords": [
@@ -10,14 +10,14 @@
     "sdd",
     "pr-gate"
   ],
-  "homepage": "https://github.com/gaspodewonder/corespec/tree/main/packages/specguard",
+  "homepage": "https://github.com/getcorespec/corespec/tree/main/packages/specguard",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gaspodewonder/corespec",
+    "url": "https://github.com/getcorespec/corespec",
     "directory": "packages/specguard"
   },
   "license": "MIT",
-  "author": "gaspodewonder",
+  "author": "getcorespec",
   "type": "module",
   "exports": {
     ".": {
@@ -44,7 +44,7 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@gaspodewonder/corespec": "workspace:*",
+    "@getcorespec/corespec": "workspace:*",
     "chalk": "^5.4.1",
     "commander": "^13.1.0",
     "dotenv": "^17.3.1"

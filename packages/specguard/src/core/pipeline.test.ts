@@ -1,13 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-vi.mock('@gaspodewonder/corespec', () => ({
+vi.mock('@getcorespec/corespec', () => ({
   checkFramework: vi.fn(),
   judgeFramework: vi.fn(),
   judgeDiff: vi.fn(),
 }));
 
 import { runPipeline } from './pipeline.js';
-import { checkFramework, judgeFramework, judgeDiff } from '@gaspodewonder/corespec';
+import { checkFramework, judgeFramework, judgeDiff } from '@getcorespec/corespec';
 
 const mockCheckFramework = vi.mocked(checkFramework);
 const mockJudgeFramework = vi.mocked(judgeFramework);

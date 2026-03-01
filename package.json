@@ -4,10 +4,10 @@
   "description": "Spec-driven development tools — retroactive spec generation and PR gating",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gaspodewonder/corespec"
+    "url": "https://github.com/getcorespec/corespec"
   },
   "license": "MIT",
-  "author": "gaspodewonder",
+  "author": "getcorespec",
   "type": "module",
   "engines": {
     "node": ">=20"

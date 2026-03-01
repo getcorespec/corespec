@@ -6,3 +6,5 @@ export type {
   DiffJudgment,
   ModelConfig,
 } from './types.js';
+
+export { checkFramework } from './tools/check-framework.js';

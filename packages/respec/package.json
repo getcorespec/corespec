@@ -1,5 +1,5 @@
 {
-  "name": "@gaspodewonder/respec",
+  "name": "@getcorespec/respec",
   "version": "0.0.1",
   "description": "Retroactive spec generation and verification for existing codebases",
   "keywords": [
@@ -9,14 +9,14 @@
     "ai",
     "sdd"
   ],
-  "homepage": "https://github.com/gaspodewonder/corespec/tree/main/packages/respec",
+  "homepage": "https://github.com/getcorespec/corespec/tree/main/packages/respec",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gaspodewonder/corespec",
+    "url": "https://github.com/getcorespec/corespec",
     "directory": "packages/respec"
   },
   "license": "MIT",
-  "author": "gaspodewonder",
+  "author": "getcorespec",
   "type": "module",
   "exports": {
     ".": {

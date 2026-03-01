@@ -1,6 +1,6 @@
 # corespec
 
-Shared spec tooling foundation for [corespec](https://github.com/gaspodewonder/corespec).
+Shared spec tooling foundation for [corespec](https://github.com/getcorespec/corespec).
 
 ## Tools
 
@@ -15,4 +15,4 @@ repo ──► check-framework ──► judge-framework ──► judge-diff �
               (heuristic)        (LLM)              (LLM)
 ```
 
-Used by [@gaspodewonder/specguard](../specguard/) and [@gaspodewonder/respec](../respec/).
+Used by [@getcorespec/specguard](../specguard/) and [@getcorespec/respec](../respec/).

@@ -24,18 +24,18 @@
 
 ```json
 {
-  "name": "@gaspodewonder/corespec",
+  "name": "@getcorespec/corespec",
   "version": "0.0.1",
   "description": "Shared spec tooling foundation — framework detection, LLM integration, common utilities",
   "keywords": ["corespec", "specs", "ai", "sdd"],
-  "homepage": "https://github.com/gaspodewonder/corespec/tree/main/packages/corespec",
+  "homepage": "https://github.com/getcorespec/corespec/tree/main/packages/corespec",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gaspodewonder/corespec",
+    "url": "https://github.com/getcorespec/corespec",
     "directory": "packages/corespec"
   },
   "license": "MIT",
-  "author": "gaspodewonder",
+  "author": "getcorespec",
   "type": "module",
   "exports": {
     ".": {
@@ -174,7 +174,7 @@ export type {
 ```markdown
 # corespec
 
-Shared spec tooling foundation for [corespec](https://github.com/gaspodewonder/corespec).
+Shared spec tooling foundation for [corespec](https://github.com/getcorespec/corespec).
 
 ## Tools
 
@@ -189,7 +189,7 @@ repo ──► check-framework ──► judge-framework ──► judge-diff �
               (heuristic)        (LLM)              (LLM)
 ```
 
-Used by [@gaspodewonder/specguard](../specguard/) and [@gaspodewonder/respec](../respec/).
+Used by [@getcorespec/specguard](../specguard/) and [@getcorespec/respec](../respec/).
 ```
 
 **Step 7: Install dependencies**
@@ -1121,7 +1121,7 @@ export function loadConfig(options: LoadConfigOptions = {}): SpecguardConfig {
 Update `packages/specguard/package.json` — add to dependencies:
 
 ```json
-"@gaspodewonder/corespec": "workspace:*"
+"@getcorespec/corespec": "workspace:*"
 ```
 
 Run: `cd /Users/Dave_Kerr/repos/github/gdog/corespec && pnpm install`
@@ -1158,14 +1158,14 @@ Create `packages/specguard/src/core/pipeline.test.ts`:
 ```typescript
 import { describe, it, expect, vi } from 'vitest';
 
-vi.mock('@gaspodewonder/corespec', () => ({
+vi.mock('@getcorespec/corespec', () => ({
   checkFramework: vi.fn(),
   judgeFramework: vi.fn(),
   judgeDiff: vi.fn(),
 }));
 
 import { runPipeline } from './pipeline.js';
-import { checkFramework, judgeFramework, judgeDiff } from '@gaspodewonder/corespec';
+import { checkFramework, judgeFramework, judgeDiff } from '@getcorespec/corespec';
 
 const mockCheckFramework = vi.mocked(checkFramework);
 const mockJudgeFramework = vi.mocked(judgeFramework);
@@ -1286,7 +1286,7 @@ import {
   type FrameworkCheckResult,
   type FrameworkJudgment,
   type DiffJudgment,
-} from '@gaspodewonder/corespec';
+} from '@getcorespec/corespec';
 
 export interface PipelineOptions {
   repoRoot: string;

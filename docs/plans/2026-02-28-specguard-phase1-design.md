@@ -168,7 +168,7 @@ Provider is inferred from the model string. API key from matching env var.
 ## GitHub Action
 
 ```yaml
-- uses: gaspodewonder/corespec/packages/specguard@v1
+- uses: getcorespec/corespec/packages/specguard@v1
   with:
     threshold: '0.7'
   env:
@@ -185,7 +185,7 @@ The action:
 
 ```
 packages/
-  corespec/                     # @gaspodewonder/corespec
+  corespec/                     # @getcorespec/corespec
     src/
       tools/
         check-framework.ts      # heuristic framework detection
@@ -195,7 +195,7 @@ packages/
         provider.ts             # Vercel AI SDK wrapper
       types.ts                  # shared types
       index.ts                  # public API
-  specguard/                    # @gaspodewonder/specguard
+  specguard/                    # @getcorespec/specguard
     src/
       cli/
         index.ts                # commander CLI
@@ -208,7 +208,7 @@ packages/
       action/
         index.ts                # GitHub Action entry point
       index.ts
-  respec/                       # @gaspodewonder/respec (future)
+  respec/                       # @getcorespec/respec (future)
     ...                         # will also use corespec tools
 ```
 

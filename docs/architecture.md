@@ -48,7 +48,7 @@ jobs:
   respec:
     runs-on: ubuntu-latest
     steps:
-      - uses: gaspodewonder/corespec/packages/respec@v1
+      - uses: getcorespec/corespec/packages/respec@v1
         with:
           command: generate
         env:
@@ -94,12 +94,12 @@ All modes pass secrets to the agent runner as environment variables. The core ne
 ## Monorepo Structure
 
 ```
-corespec/                       # gaspodewonder/corespec
+corespec/                       # getcorespec/corespec
   package.json                  # workspace root
   pnpm-workspace.yaml           # pnpm workspace config
   tsconfig.json                 # shared TypeScript config
   packages/
-    respec/                     # @gaspodewonder/respec
+    respec/                     # @getcorespec/respec
       package.json
       src/
         cli/                    # CLI entry point (commander)
@@ -109,7 +109,7 @@ corespec/                       # gaspodewonder/corespec
         index.ts                # library exports
       bin/
       dist/
-    specguard/                  # @gaspodewonder/specguard
+    specguard/                  # @getcorespec/specguard
       package.json
       src/
         cli/                    # CLI entry point

@@ -5,7 +5,7 @@ import {
   type FrameworkCheckResult,
   type FrameworkJudgment,
   type DiffJudgment,
-} from '@gaspodewonder/corespec';
+} from '@getcorespec/corespec';
 
 export interface PipelineOptions {
   repoRoot: string;

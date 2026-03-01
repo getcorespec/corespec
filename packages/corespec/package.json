@@ -1,16 +1,16 @@
 {
-  "name": "@gaspodewonder/corespec",
+  "name": "@getcorespec/corespec",
   "version": "0.0.1",
   "description": "Shared spec tooling foundation — framework detection, LLM integration, common utilities",
   "keywords": ["corespec", "specs", "ai", "sdd"],
-  "homepage": "https://github.com/gaspodewonder/corespec/tree/main/packages/corespec",
+  "homepage": "https://github.com/getcorespec/corespec/tree/main/packages/corespec",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gaspodewonder/corespec",
+    "url": "https://github.com/getcorespec/corespec",
     "directory": "packages/corespec"
   },
   "license": "MIT",
-  "author": "gaspodewonder",
+  "author": "getcorespec",
   "type": "module",
   "exports": {
     ".": {

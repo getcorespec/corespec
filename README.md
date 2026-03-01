@@ -2,7 +2,7 @@
   <h2 align="center"><code>corespec</code></h2>
   <h3 align="center">Spec-driven development tools for existing codebases.</h3>
   <p align="center">
-    <a href="https://github.com/gaspodewonder/corespec/actions/workflows/cicd.yaml"><img src="https://github.com/gaspodewonder/corespec/actions/workflows/cicd.yaml/badge.svg" alt="cicd"></a>
+    <a href="https://github.com/getcorespec/corespec/actions/workflows/cicd.yaml"><img src="https://github.com/getcorespec/corespec/actions/workflows/cicd.yaml/badge.svg" alt="cicd"></a>
   </p>
 </p>
 

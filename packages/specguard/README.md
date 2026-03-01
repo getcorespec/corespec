@@ -6,8 +6,8 @@
     <a href="#github-action">GitHub Action</a>
   </p>
   <p align="center">
-    <a href="https://github.com/gaspodewonder/corespec/actions/workflows/cicd.yaml"><img src="https://github.com/gaspodewonder/corespec/actions/workflows/cicd.yaml/badge.svg" alt="cicd"></a>
-    <a href="https://www.npmjs.com/package/@gaspodewonder/specguard"><img src="https://img.shields.io/npm/v/%40gaspodewonder/specguard" alt="npm version"></a>
+    <a href="https://github.com/getcorespec/corespec/actions/workflows/cicd.yaml"><img src="https://github.com/getcorespec/corespec/actions/workflows/cicd.yaml/badge.svg" alt="cicd"></a>
+    <a href="https://www.npmjs.com/package/@getcorespec/specguard"><img src="https://img.shields.io/npm/v/%40getcorespec/specguard" alt="npm version"></a>
   </p>
 </p>
 
@@ -16,7 +16,7 @@
 Install specguard:
 
 ```bash
-npm install -g @gaspodewonder/specguard
+npm install -g @getcorespec/specguard
 ```
 
 Check spec coverage on a PR:
@@ -64,7 +64,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: gaspodewonder/corespec/packages/specguard@main
+      - uses: getcorespec/corespec/packages/specguard@main
         with:
           anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
 ```

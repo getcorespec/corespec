@@ -12,10 +12,10 @@
 
 Shared foundation library. Spec framework detection, LLM integration, GitHub API helpers, and common utilities that respec and specguard build on.
 
-### [respec](./packages/respec/)
-
-Retroactive spec generation. Analyzes existing code and PRs to generate structured specifications. Built on corespec.
-
 ### [specguard](./packages/specguard/)
 
 PR gating for specs. Checks that code changes have an associated specification before merge. Built on corespec.
+
+### [respec](./packages/respec/)
+
+Retroactive spec generation. Analyzes existing code and PRs to generate structured specifications. Built on corespec.

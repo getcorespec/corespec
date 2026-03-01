@@ -27,6 +27,30 @@ specguard check
 
 ![specguard check output](./docs/screenshots/specguard-check-fail.png)
 
+## GitHub Action
+
+Add specguard to your CI pipeline:
+
+```yaml
+# .github/workflows/specguard.yml
+name: specguard
+on: [pull_request]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gaspodewonder/corespec/packages/specguard@main
+        with:
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+```
+
+See [setup docs](./docs/setup.md) for configuring API keys and options.
+
 ## Documentation
 
-Coming soon.
+- [Setup](./docs/setup.md) — credentials and configuration
+

@@ -8,3 +8,5 @@ export type {
 } from './types.js';
 
 export { checkFramework } from './tools/check-framework.js';
+
+export { parseModelId, callLLM } from './llm/provider.js';

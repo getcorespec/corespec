@@ -1,0 +1,57 @@
+{
+  "name": "@getcorespec/specguard",
+  "version": "0.0.2",
+  "description": "PR gating for spec coverage — checks that code changes have associated specs",
+  "keywords": [
+    "specguard",
+    "specs",
+    "cli",
+    "ai",
+    "sdd",
+    "pr-gate"
+  ],
+  "homepage": "https://github.com/getcorespec/corespec/tree/main/packages/specguard",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/getcorespec/corespec",
+    "directory": "packages/specguard"
+  },
+  "license": "MIT",
+  "author": "getcorespec",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "specguard": "./bin/specguard.js"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "!dist/**/*.test.js",
+    "!dist/**/*.map"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@getcorespec/corespec": "workspace:*",
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0",
+    "dotenv": "^17.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
+  }
+}

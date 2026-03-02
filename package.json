@@ -1,0 +1,16 @@
+{
+  "name": "corespec",
+  "private": true,
+  "description": "Spec-driven development tools — retroactive spec generation and PR gating",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/getcorespec/corespec"
+  },
+  "license": "MIT",
+  "author": "getcorespec",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@9.15.4"
+}

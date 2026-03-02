@@ -1,0 +1,21 @@
+{
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "packages": {
+    "packages/corespec": {
+      "release-type": "node",
+      "package-name": "@getcorespec/corespec",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "packages/specguard": {
+      "release-type": "node",
+      "package-name": "@getcorespec/specguard",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "packages/respec": {
+      "release-type": "node",
+      "package-name": "@getcorespec/respec",
+      "changelog-path": "CHANGELOG.md"
+    }
+  }
+}

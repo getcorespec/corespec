@@ -1,0 +1,26 @@
+<p align="center">
+  <h2 align="center"><code>corespec</code></h2>
+  <h3 align="center">Spec-driven development tools for existing codebases.</h3>
+  <p align="center">
+    <a href="https://github.com/getcorespec/corespec/actions/workflows/cicd.yaml"><img src="https://github.com/getcorespec/corespec/actions/workflows/cicd.yaml/badge.svg" alt="cicd"></a>
+    <a href="https://github.com/getcorespec/corespec/actions/workflows/release.yaml"><img src="https://github.com/getcorespec/corespec/actions/workflows/release.yaml/badge.svg" alt="release"></a>
+    <a href="https://www.npmjs.com/package/@getcorespec/corespec"><img src="https://img.shields.io/npm/v/@getcorespec/corespec" alt="npm corespec"></a>
+    <a href="https://www.npmjs.com/package/@getcorespec/specguard"><img src="https://img.shields.io/npm/v/@getcorespec/specguard" alt="npm specguard"></a>
+  </p>
+</p>
+
+## Packages
+
+### [corespec](./packages/corespec/)
+
+Shared foundation library. Spec framework detection, LLM integration, GitHub API helpers, and common utilities that respec and specguard build on.
+
+### [specguard](./packages/specguard/)
+
+PR gating for specs. Checks that code changes have an associated specification before merge. Built on corespec.
+
+![specguard check output](./packages/specguard/docs/screenshots/specguard-check-fail.png)
+
+### [respec](./packages/respec/)
+
+Retroactive spec generation. Analyzes existing code and PRs to generate structured specifications. Built on corespec.

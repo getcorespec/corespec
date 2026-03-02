@@ -1,0 +1,93 @@
+name: specguard
+description: PR gating for spec coverage. Checks that code changes have associated specs.
+
+inputs:
+  anthropic-api-key:
+    description: Anthropic API key for LLM calls
+    required: false
+  openai-api-key:
+    description: OpenAI API key for LLM calls
+    required: false
+  model:
+    description: LLM model (e.g. anthropic/claude-sonnet-4-20250514)
+    required: false
+  threshold:
+    description: Coverage threshold 0-1 (default 0.7)
+    required: false
+  comment:
+    description: Post PR comment with results (default true)
+    required: false
+    default: "true"
+  diff-range:
+    description: Git diff range (default auto-detected from PR context)
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Build specguard
+      shell: bash
+      run: |
+        CORESPEC_ROOT="${{ github.action_path }}/../.."
+        cd "$CORESPEC_ROOT"
+        pnpm install --frozen-lockfile
+        pnpm -r build
+
+    - name: Run specguard check
+      id: specguard
+      shell: bash
+      env:
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+        SPECGUARD_MODEL: ${{ inputs.model }}
+      run: |
+        SPECGUARD="${{ github.action_path }}/bin/specguard.js"
+
+        # Determine diff range
+        if [ -n "${{ inputs.diff-range }}" ]; then
+          DIFF_RANGE="${{ inputs.diff-range }}"
+        elif [ -n "${{ github.base_ref }}" ]; then
+          DIFF_RANGE="origin/${{ github.base_ref }}..HEAD"
+        else
+          DIFF_RANGE="origin/main..HEAD"
+        fi
+
+        # Build CLI args
+        ARGS="check $DIFF_RANGE --output json"
+        if [ -n "${{ inputs.threshold }}" ]; then
+          ARGS="$ARGS --threshold ${{ inputs.threshold }}"
+        fi
+
+        # Run specguard, capture output regardless of exit code
+        set +e
+        RESULT=$(node "$SPECGUARD" $ARGS 2>&1)
+        EXIT_CODE=$?
+        set -e
+
+        # Save outputs
+        echo "exit-code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
+        echo "json<<SPECGUARD_EOF" >> "$GITHUB_OUTPUT"
+        echo "$RESULT" >> "$GITHUB_OUTPUT"
+        echo "SPECGUARD_EOF" >> "$GITHUB_OUTPUT"
+
+    - name: Post PR comment
+      if: inputs.comment == 'true' && github.event_name == 'pull_request'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        RESULT_JSON: ${{ steps.specguard.outputs.json }}
+        EXIT_CODE: ${{ steps.specguard.outputs.exit-code }}
+      run: |
+        bash "${{ github.action_path }}/action/comment.sh"
+
+    - name: Set exit code
+      shell: bash
+      run: exit ${{ steps.specguard.outputs.exit-code }}

@@ -27,3 +27,8 @@ PR gating for specs. Checks that code changes have an associated specification b
 ### [respec](./packages/respec/)
 
 Retroactive spec generation. Analyzes existing code and PRs to generate structured specifications. Built on corespec.
+
+<p>
+  <img src="./packages/respec/docs/screenshots/respec-generate.png" width="420" alt="respec CLI output">
+  <img src="./packages/respec/docs/screenshots/respec-pr.png" width="420" alt="respec generate PR">
+</p>

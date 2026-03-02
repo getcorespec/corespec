@@ -39,12 +39,16 @@ export ANTHROPIC_API_KEY=sk-ant-...
 export OPENAI_API_KEY=sk-...
 ```
 
-Optionally create a `.specguard.yml`:
+Override the default model (`claude-haiku-4-5`) via CLI flag or config file:
+
+```bash
+specguard check --model anthropic/claude-sonnet-4-20250514
+```
+
+Or create a `.specguard.yml`:
 
 ```yaml
-# LLM model — any Vercel AI SDK provider/model works
 model: anthropic/claude-sonnet-4-20250514
-# minimum coverage score (0-1) for a file to pass
 threshold: 0.7
 ```
 

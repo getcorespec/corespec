@@ -34,7 +34,8 @@ export async function judgeFramework(
   config: ModelConfig,
 ): Promise<FrameworkJudgment> {
   const prompt = buildPrompt(checkResult);
-  const response = await callLLM(config, prompt);
+  const raw = await callLLM(config, prompt);
+  const response = raw.replace(/^```(?:json)?\s*\n?/gm, '').replace(/\n?```\s*$/gm, '').trim();
 
   const parsed = JSON.parse(response) as FrameworkJudgment;
 

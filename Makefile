@@ -8,8 +8,8 @@ help: # Show help for each of the Makefile recipes.
 install: # Build and install both CLIs globally.
 	pnpm install
 	pnpm -r build
-	npm install -g ./packages/specguard
-	npm install -g ./packages/respec
+	npm install -g --force ./packages/specguard
+	npm install -g --force ./packages/respec
 
 .PHONY: build
 build: # Build all packages.

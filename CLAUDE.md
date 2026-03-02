@@ -24,7 +24,30 @@ make install                     # build + install CLIs globally
 
 ## Key patterns
 
-- Config precedence: CLI flags > env vars > .specguard.yml > defaults
+- Config precedence: CLI flags > .yml > defaults
 - LLM provider from model string: `anthropic/model-name` or `openai/model-name`
 - Pipeline: check-framework (heuristic) → judge-framework (LLM) → judge-diff (LLM)
 - Exit 0 = pass, exit 1 = fail
+
+## Terminal screenshots
+
+For README screenshots using shellwright, use a minimal prompt (`$ `) with no path/git info:
+
+```bash
+# Start session with minimal prompt
+export PS1='$ '
+```
+
+If the command needs to be faked (e.g. LLM calls unavailable), alias the command name:
+
+```bash
+alias respec='npx tsx scratch/demo-respec.ts'
+```
+
+## CLI progress patterns
+
+For any CLI command that makes LLM calls or processes multiple items:
+- Print a brief status line before long-running work starts (e.g. `Analyzing codebase...`)
+- Show item count after discovery (e.g. `Found 12 source files`)
+- Print per-item progress as `[n/total] item-name` using `chalk.dim()`
+- Keep progress to stderr-style dim text — don't pollute structured output (JSON mode)

@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -23,3 +28,32 @@ jobs:
       - run: pnpm -r build
 
       - run: pnpm -r test
+
+  check-release:
+    needs: [build-and-test]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    outputs:
+      released: ${{ steps.release-please.outputs.releases_created }}
+      tag: ${{ steps.release-please.outputs.tag_name }}
+      rp_outputs: ${{ toJSON(steps.release-please.outputs) }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release-please
+        with:
+          config-file: .github/release-please-config.json
+          manifest-file: .github/release-please-manifest.json
+
+  trigger-release:
+    needs: [check-release]
+    if: needs.check-release.outputs.released == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trigger release workflow
+        run: |
+          gh workflow run release.yaml \
+            --field tag="${{ needs.check-release.outputs.tag }}"
+        env:
+          GH_TOKEN: ${{ github.token }}

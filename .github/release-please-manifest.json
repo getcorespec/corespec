@@ -1,1 +1,5 @@
-{}
+{
+  "packages/corespec": "0.0.1",
+  "packages/specguard": "0.0.1",
+  "packages/respec": "0.0.1"
+}

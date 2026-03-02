@@ -47,7 +47,6 @@ runs:
       env:
         ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
         OPENAI_API_KEY: ${{ inputs.openai-api-key }}
-        SPECGUARD_MODEL: ${{ inputs.model }}
       run: |
         SPECGUARD="${{ github.action_path }}/bin/specguard.js"
 
@@ -62,6 +61,9 @@ runs:
 
         # Build CLI args
         ARGS="check $DIFF_RANGE --output json"
+        if [ -n "${{ inputs.model }}" ]; then
+          ARGS="$ARGS --model ${{ inputs.model }}"
+        fi
         if [ -n "${{ inputs.threshold }}" ]; then
           ARGS="$ARGS --threshold ${{ inputs.threshold }}"
         fi

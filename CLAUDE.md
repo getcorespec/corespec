@@ -29,6 +29,21 @@ make install                     # build + install CLIs globally
 - Pipeline: check-framework (heuristic) → judge-framework (LLM) → judge-diff (LLM)
 - Exit 0 = pass, exit 1 = fail
 
+## Terminal screenshots
+
+For README screenshots using shellwright, use a minimal prompt (`$ `) with no path/git info:
+
+```bash
+# Start session with minimal prompt
+export PS1='$ '
+```
+
+If the command needs to be faked (e.g. LLM calls unavailable), alias the command name:
+
+```bash
+alias respec='npx tsx scratch/demo-respec.ts'
+```
+
 ## CLI progress patterns
 
 For any CLI command that makes LLM calls or processes multiple items:

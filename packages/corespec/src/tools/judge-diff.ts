@@ -43,7 +43,8 @@ export async function judgeDiff(
   threshold: number,
 ): Promise<DiffJudgment> {
   const prompt = buildPrompt(framework, diff, threshold);
-  const response = await callLLM(config, prompt);
+  const raw = await callLLM(config, prompt);
+  const response = raw.replace(/^```(?:json)?\s*\n?/gm, '').replace(/\n?```\s*$/gm, '').trim();
 
   const parsed = JSON.parse(response) as DiffJudgment;
 

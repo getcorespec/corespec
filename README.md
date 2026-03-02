@@ -30,4 +30,5 @@ Retroactive spec generation. Analyzes existing code and PRs to generate structur
 
 <p>
   <img src="./packages/respec/docs/screenshots/respec-generate.png" width="420" alt="respec CLI output">
+  <img src="./packages/respec/docs/screenshots/respec-pr.png" width="420" alt="respec generate PR">
 </p>

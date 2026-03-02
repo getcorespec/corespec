@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Git tag to release (e.g. "@getcorespec/specguard-v0.1.0")'
-        required: true
+        description: 'Git ref to release (tag or SHA). Defaults to the triggering ref.'
+        required: false
         type: string
 
 permissions:
@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.tag }}
+          ref: ${{ inputs.tag || github.ref }}
 
       - uses: pnpm/action-setup@v4
 

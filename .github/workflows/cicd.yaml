@@ -35,8 +35,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       released: ${{ steps.release-please.outputs.releases_created }}
-      tag: ${{ steps.release-please.outputs.tag_name }}
-      rp_outputs: ${{ toJSON(steps.release-please.outputs) }}
     steps:
       - uses: googleapis/release-please-action@v4
         id: release-please
@@ -54,6 +52,6 @@ jobs:
       - name: Trigger release workflow
         run: |
           gh workflow run release.yaml \
-            --field tag="${{ needs.check-release.outputs.tag }}"
+            --ref "$GITHUB_SHA"
         env:
           GH_TOKEN: ${{ github.token }}

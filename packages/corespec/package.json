@@ -1,8 +1,13 @@
 {
   "name": "@getcorespec/corespec",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Shared spec tooling foundation — framework detection, LLM integration, common utilities",
-  "keywords": ["corespec", "specs", "ai", "sdd"],
+  "keywords": [
+    "corespec",
+    "specs",
+    "ai",
+    "sdd"
+  ],
   "homepage": "https://github.com/getcorespec/corespec/tree/main/packages/corespec",
   "repository": {
     "type": "git",
@@ -18,14 +23,20 @@
       "default": "./dist/index.js"
     }
   },
-  "files": ["dist", "!dist/**/*.test.js", "!dist/**/*.map"],
+  "files": [
+    "dist",
+    "!dist/**/*.test.js",
+    "!dist/**/*.map"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
     "test": "vitest run",
     "test:watch": "vitest"
   },
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "ai": "^6.0.105",
     "@ai-sdk/anthropic": "^3.0.50",

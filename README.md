@@ -19,7 +19,10 @@ Shared foundation library. Spec framework detection, LLM integration, GitHub API
 
 PR gating for specs. Checks that code changes have an associated specification before merge. Built on corespec.
 
-![specguard check output](./packages/specguard/docs/screenshots/specguard-check-fail.png)
+<p>
+  <img src="./packages/specguard/docs/screenshots/specguard-check-fail.png" width="420" alt="specguard CLI output">
+  <img src="./packages/specguard/docs/screenshots/failed-pr.png" width="420" alt="specguard gating a PR">
+</p>
 
 ### [respec](./packages/respec/)
 

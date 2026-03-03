@@ -1,5 +1,5 @@
 # Tasks
 
-- [ ] npm publish pipeline (no CI publish workflow exists yet)
+- [x] npm publish pipeline — `.github/workflows/release.yaml`
 - [ ] `specguard init` command (see docs/ideas.md)
-- [ ] `respec` package — not yet implemented
+- [x] `respec` package — CLI, generator, formatter, pipeline implemented

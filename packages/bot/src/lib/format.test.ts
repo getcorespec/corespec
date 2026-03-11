@@ -44,21 +44,25 @@ describe('formatPrComment', () => {
 });
 
 describe('formatCheckRunOutput', () => {
-  it('returns pass title and summary', () => {
+  it('returns pass title, summary, and file table', () => {
     const output = formatCheckRunOutput(makeResult());
     expect(output.title).toBe('specguard: PASS');
     expect(output.summary).toContain('All 1 files');
+    expect(output.text).toContain('`src/index.ts`');
+    expect(output.text).toContain('**Framework:** openspec');
   });
 
-  it('returns fail title and summary', () => {
+  it('returns fail title, summary, and file table', () => {
     const output = formatCheckRunOutput(makeResult({
       result: 'fail',
       files: [
         { file: 'a.ts', score: 0.9, pass: true },
-        { file: 'b.ts', score: 0.3, pass: false },
+        { file: 'b.ts', score: 0.3, pass: false, gap: 'No tests' },
       ],
     }));
     expect(output.title).toBe('specguard: FAIL');
     expect(output.summary).toContain('1 of 2 files');
+    expect(output.text).toContain('`b.ts`');
+    expect(output.text).toContain('No tests');
   });
 });

@@ -30,3 +30,14 @@ Retroactive spec generation. Analyzes existing code and PRs to generate structur
   <img src="./packages/respec/docs/screenshots/respec-generate.png" width="420" alt="respec CLI output">
   <img src="./packages/respec/docs/screenshots/respec-pr.png" width="420" alt="respec generate PR">
 </p>
+
+### [bot](./packages/bot/)
+
+GitHub App that runs specguard on your pull requests automatically. Install it and every PR gets a spec coverage report.
+
+<p>
+  <img src="./packages/bot/docs/screenshots/bot-pr-comment.png" width="420" alt="bot PR comment with spec report">
+  <img src="./packages/bot/docs/screenshots/bot-check-run.png" width="420" alt="bot check run in PR">
+</p>
+
+> **Get started instantly:** [Install the corespec GitHub App](https://github.com/apps/getcorespec) — no config needed.

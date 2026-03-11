@@ -53,6 +53,14 @@ After creating the app, generate a private key from the app's settings page (**P
 4. Enabled tools run against the PR diff (currently: specguard)
 5. Check run and PR comment are updated with the result
 
+The bot posts a per-file spec coverage report as a PR comment:
+
+![Bot PR comment](./docs/screenshots/bot-pr-comment.png)
+
+And creates a check run visible in the PR's Checks tab:
+
+![Bot check run](./docs/screenshots/bot-check-run.png)
+
 ## Testing locally
 
 Use [smee.io](https://smee.io) to forward GitHub webhooks to your local machine. Create a channel at https://smee.io, paste the URL as the **Webhook URL** in your GitHub App settings, then run:

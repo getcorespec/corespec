@@ -12,6 +12,7 @@ interface LoadConfigOptions {
   model?: string;
   threshold?: number;
   configPath?: string;
+  baseURL?: string;
 }
 
 const DEFAULTS: SpecguardConfig = {

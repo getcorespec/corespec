@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.3](https://github.com/getcorespec/corespec/compare/specguard-v0.0.2...specguard-v0.0.3) (2026-03-12)
+
+
+### Features
+
+* add bot package — GitHub App webhook server ([#11](https://github.com/getcorespec/corespec/issues/11)) ([e244a24](https://github.com/getcorespec/corespec/commit/e244a245fbc1c4191afa8f286857372747f61e28))
+* implement respec generate command and simplify model config ([#7](https://github.com/getcorespec/corespec/issues/7)) ([b10e01b](https://github.com/getcorespec/corespec/commit/b10e01b8cdce86cd99b080eb9dbe570fb95c3c96))
+
 ## [0.0.2](https://github.com/getcorespec/corespec/compare/specguard-v0.0.1...specguard-v0.0.2) (2026-03-02)
 
 

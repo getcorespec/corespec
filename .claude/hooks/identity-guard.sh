@@ -17,6 +17,11 @@ allow() {
   exit 0
 }
 
+# Skip identity checks in CI — auth is handled by GITHUB_TOKEN
+if [[ "$CI" == "true" ]]; then
+  allow
+fi
+
 # Check git identity on commit commands
 if [[ "$COMMAND" =~ git\ commit ]]; then
   AUTHOR_EMAIL="${GIT_AUTHOR_EMAIL:-$(git config user.email 2>/dev/null)}"

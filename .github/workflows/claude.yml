@@ -13,10 +13,17 @@ on:
 jobs:
   claude:
     if: |
-      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
-      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
-      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
-      (github.event_name == 'issues' && contains(github.event.issue.body, '@claude'))
+      (
+        (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+        (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+        (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
+        (github.event_name == 'issues' && contains(github.event.issue.body, '@claude'))
+      ) && (
+        (github.event_name == 'issue_comment' && contains(fromJSON('["OWNER","MEMBER"]'), github.event.comment.author_association)) ||
+        (github.event_name == 'pull_request_review_comment' && contains(fromJSON('["OWNER","MEMBER"]'), github.event.comment.author_association)) ||
+        (github.event_name == 'pull_request_review' && contains(fromJSON('["OWNER","MEMBER"]'), github.event.review.author_association)) ||
+        (github.event_name == 'issues' && contains(fromJSON('["OWNER","MEMBER"]'), github.event.issue.author_association))
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -31,3 +38,4 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}

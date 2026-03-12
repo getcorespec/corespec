@@ -1,6 +1,6 @@
 import { generateText } from 'ai';
 import { anthropic } from '@ai-sdk/anthropic';
-import { openai } from '@ai-sdk/openai';
+import { openai, createOpenAI } from '@ai-sdk/openai';
 import type { ModelConfig } from '../types.js';
 
 const SUPPORTED_PROVIDERS = ['anthropic', 'openai'] as const;
@@ -25,18 +25,21 @@ export function parseModelId(modelId: string): ParsedModel {
   return { provider, modelName: parts.slice(1).join('/') };
 }
 
-function getModel(parsed: ParsedModel) {
+function getModel(parsed: ParsedModel, baseURL?: string) {
   switch (parsed.provider) {
     case 'anthropic':
       return anthropic(parsed.modelName);
     case 'openai':
+      if (baseURL) {
+        return createOpenAI({ baseURL })(parsed.modelName);
+      }
       return openai(parsed.modelName);
   }
 }
 
 export async function callLLM(config: ModelConfig, prompt: string): Promise<string> {
   const parsed = parseModelId(config.model);
-  const model = getModel(parsed);
+  const model = getModel(parsed, config.baseURL);
 
   const { text } = await generateText({
     model,

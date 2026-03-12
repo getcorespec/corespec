@@ -12,6 +12,7 @@ export interface PipelineOptions {
   diff: string;
   model: string;
   threshold: number;
+  baseURL?: string;
 }
 
 export interface PipelineResult {
@@ -23,9 +24,11 @@ export interface PipelineResult {
 export async function runPipeline(options: PipelineOptions): Promise<PipelineResult> {
   const signals = checkFramework(options.repoRoot);
 
-  const framework = await judgeFramework(signals, { model: options.model });
+  const modelConfig = { model: options.model, baseURL: options.baseURL };
 
-  const diff = await judgeDiff(framework, options.diff, { model: options.model }, options.threshold);
+  const framework = await judgeFramework(signals, modelConfig);
+
+  const diff = await judgeDiff(framework, options.diff, modelConfig, options.threshold);
 
   return { signals, framework, diff };
 }

@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 import { createRequire } from 'module';
 import { checkCommand } from './commands/check.js';
+import { hookCommand } from './commands/hook.js';
 
 const require = createRequire(import.meta.url);
 const { version } = require('../../package.json');
@@ -13,5 +14,6 @@ program
   .version(version);
 
 program.addCommand(checkCommand);
+program.addCommand(hookCommand);
 
 program.parse();

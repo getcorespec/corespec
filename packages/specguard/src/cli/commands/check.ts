@@ -12,13 +12,11 @@ export const checkCommand = new Command('check')
   .option('--output <format>', 'output format: human or json', 'human')
   .option('--config <path>', 'config file path')
   .option('--staged', 'check only staged changes (for use as a pre-commit hook)')
-  .option('--base-url <url>', 'base URL for OpenAI-compatible local endpoint (e.g. http://localhost:11434/v1)')
   .action(async (diffRange: string, options) => {
     const config = loadConfig({
       model: options.model,
       threshold: options.threshold,
       configPath: options.config,
-      baseURL: options.baseUrl,
     });
 
     let diff: string;

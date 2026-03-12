@@ -1,5 +1,5 @@
 import { generateText } from 'ai';
-import { anthropic } from '@ai-sdk/anthropic';
+import { anthropic, createAnthropic } from '@ai-sdk/anthropic';
 import { openai, createOpenAI } from '@ai-sdk/openai';
 import type { ModelConfig } from '../types.js';
 
@@ -28,6 +28,9 @@ export function parseModelId(modelId: string): ParsedModel {
 function getModel(parsed: ParsedModel, baseURL?: string) {
   switch (parsed.provider) {
     case 'anthropic':
+      if (baseURL) {
+        return createAnthropic({ baseURL })(parsed.modelName);
+      }
       return anthropic(parsed.modelName);
     case 'openai':
       if (baseURL) {

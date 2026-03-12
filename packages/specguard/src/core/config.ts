@@ -12,7 +12,6 @@ interface LoadConfigOptions {
   model?: string;
   threshold?: number;
   configPath?: string;
-  baseURL?: string;
 }
 
 const DEFAULTS: SpecguardConfig = {
@@ -48,6 +47,6 @@ export function loadConfig(options: LoadConfigOptions = {}): SpecguardConfig {
   return {
     model: options.model ?? fileConfig.model ?? DEFAULTS.model,
     threshold: options.threshold ?? fileConfig.threshold ?? DEFAULTS.threshold,
-    baseURL: options.baseURL ?? fileConfig.baseURL,
+    baseURL: fileConfig.baseURL,
   };
 }

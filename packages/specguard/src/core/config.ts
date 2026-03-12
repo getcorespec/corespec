@@ -4,12 +4,14 @@ import { join } from 'path';
 export interface SpecguardConfig {
   model: string;
   threshold: number;
+  baseURL?: string;
 }
 
 interface LoadConfigOptions {
   cwd?: string;
   model?: string;
   threshold?: number;
+  baseURL?: string;
   configPath?: string;
 }
 
@@ -30,6 +32,7 @@ function loadYamlConfig(filePath: string): Partial<SpecguardConfig> {
     const [, key, value] = match;
     if (key === 'model') result.model = value.trim();
     if (key === 'threshold') result.threshold = parseFloat(value.trim());
+    if (key === 'baseURL') result.baseURL = value.trim();
   }
 
   return result;
@@ -45,5 +48,6 @@ export function loadConfig(options: LoadConfigOptions = {}): SpecguardConfig {
   return {
     model: options.model ?? fileConfig.model ?? DEFAULTS.model,
     threshold: options.threshold ?? fileConfig.threshold ?? DEFAULTS.threshold,
+    baseURL: options.baseURL ?? fileConfig.baseURL,
   };
 }

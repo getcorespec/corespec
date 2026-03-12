@@ -52,4 +52,6 @@ export interface DiffJudgment {
 export interface ModelConfig {
   /** Model identifier (e.g. "anthropic/claude-sonnet-4-20250514", "openai/gpt-4o") */
   model: string;
+  /** Optional base URL for OpenAI-compatible local endpoints (e.g. http://localhost:11434/v1 for Ollama) */
+  baseURL?: string;
 }

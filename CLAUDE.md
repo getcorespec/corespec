@@ -29,6 +29,22 @@ make install                     # build + install CLIs globally
 - Pipeline: check-framework (heuristic) → judge-framework (LLM) → judge-diff (LLM)
 - Exit 0 = pass, exit 1 = fail
 
+## Model config vs operation config
+
+**Model config** (in `.specguard.yml` only, never CLI flags): `model`, `baseURL`, and future LLM params like temperature and top-k. These options can grow complex and belong consolidated in the config file (KISS).
+
+**Operation config** (CLI flags allowed): `threshold`, `--staged`, `--output`, `--config`. These are per-run options that users legitimately want to vary per invocation.
+
+This separation prevents CLI option explosion as model parameters grow.
+
+## baseURL for custom/local LLM endpoints
+
+`baseURL` in `ModelConfig` works for both Anthropic (`createAnthropic({ baseURL })`) and OpenAI-compatible providers (`createOpenAI({ baseURL })`). Use cases: self-hosted Anthropic endpoints, Ollama, LM Studio. Always config-file-only — not exposed as a CLI flag.
+
+## Pre-commit hook pattern
+
+`specguard hook install` writes `.git/hooks/pre-commit` using `npx specguard check --staged`. The `hook` command uses commander's subcommand pattern: `hookCommand.addCommand(installHookCommand)`. Subsequent subcommands (e.g. `hook uninstall`) follow the same pattern.
+
 ## Terminal screenshots
 
 For README screenshots using shellwright, use a minimal prompt (`$ `) with no path/git info:

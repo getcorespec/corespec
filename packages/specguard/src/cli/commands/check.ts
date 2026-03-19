@@ -11,6 +11,7 @@ export const checkCommand = new Command('check')
   .option('--threshold <number>', 'confidence threshold for pass/fail', parseFloat)
   .option('--output <format>', 'output format: human or json', 'human')
   .option('--config <path>', 'config file path')
+  .option('--staged', 'check only staged changes (for use as a pre-commit hook)')
   .action(async (diffRange: string, options) => {
     const config = loadConfig({
       model: options.model,
@@ -20,14 +21,20 @@ export const checkCommand = new Command('check')
 
     let diff: string;
     try {
-      diff = execSync(`git diff ${diffRange}`, { encoding: 'utf-8' });
+      if (options.staged) {
+        diff = execSync('git diff --staged', { encoding: 'utf-8' });
+      } else {
+        diff = execSync(`git diff ${diffRange}`, { encoding: 'utf-8' });
+      }
     } catch {
-      console.error(`Error: failed to get git diff for range "${diffRange}"`);
+      const context = options.staged ? 'staged changes' : `range "${diffRange}"`;
+      console.error(`Error: failed to get git diff for ${context}`);
       process.exit(1);
     }
 
     if (!diff.trim()) {
-      console.error(`No changes found in range "${diffRange}"`);
+      const context = options.staged ? 'staged changes' : `range "${diffRange}"`;
+      console.error(`No changes found in ${context}`);
       process.exit(0);
     }
 
@@ -38,6 +45,7 @@ export const checkCommand = new Command('check')
       diff,
       model: config.model,
       threshold: config.threshold,
+      baseURL: config.baseURL,
     });
 
     if (options.output === 'json') {

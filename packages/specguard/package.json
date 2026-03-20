@@ -44,6 +44,7 @@
     "node": ">=20"
   },
   "dependencies": {
+    "@ai-sdk/provider": "^3.0.8",
     "@getcorespec/corespec": "workspace:*",
     "chalk": "^5.4.1",
     "commander": "^13.1.0",

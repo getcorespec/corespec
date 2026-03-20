@@ -66,6 +66,19 @@ specguard hook install
 
 This writes a `.git/hooks/pre-commit` script that runs `specguard check --staged` against your staged changes. If spec coverage is below the threshold, the commit is blocked.
 
+To install manually, create `.git/hooks/pre-commit`:
+
+```bash
+#!/bin/sh
+npx specguard check --staged
+```
+
+Then make it executable:
+
+```bash
+chmod +x .git/hooks/pre-commit
+```
+
 To overwrite an existing pre-commit hook:
 
 ```bash

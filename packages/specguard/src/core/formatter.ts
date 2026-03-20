@@ -42,8 +42,11 @@ export function formatHuman(result: PipelineResult): string {
   for (const file of result.diff.files) {
     const score = file.score.toFixed(2);
     const icon = file.pass ? chalk.green('\u2713') : chalk.red('\u2717');
-    const gap = file.gap ? `  ${file.gap}` : '';
-    lines.push(`  ${file.file.padEnd(30)} ${score}  ${icon}${gap}`);
+    const name = file.file.length > 40 ? '\u2026' + file.file.slice(-39) : file.file;
+    lines.push(`  ${name.padEnd(41)} ${score}  ${icon}`);
+    if (file.gap) {
+      lines.push(chalk.dim(`    ${file.gap}`));
+    }
   }
 
   lines.push('');

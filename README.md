@@ -22,6 +22,13 @@ PR gating for specs. Checks that code changes have an associated specification b
   <img src="./packages/specguard/docs/screenshots/failed-pr.png" width="420" alt="specguard gating a PR">
 </p>
 
+Specguard can:
+
+- [Be run from the CLI](./packages/specguard/README.md#quickstart)
+- [Be setup as a pre-commit hook](./packages/specguard/README.md#pre-commit-hook) or [Claude Code hook](./packages/specguard/README.md#claude-code-hook)
+- [Run as a GitHub Action](./packages/specguard/README.md#github-action)
+- Be configured as a bot
+
 ### [respec](./packages/respec/)
 
 Retroactive spec generation. Analyzes existing code and PRs to generate structured specifications. Built on corespec.

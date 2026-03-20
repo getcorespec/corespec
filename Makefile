@@ -11,6 +11,13 @@ install: # Build and install both CLIs globally.
 	npm install -g --force ./packages/specguard
 	npm install -g --force ./packages/respec
 
+.PHONY: install-dev
+install-dev: # Build and link both CLIs for local development.
+	pnpm install
+	pnpm -r build
+	npm link ./packages/specguard
+	npm link ./packages/respec
+
 .PHONY: build
 build: # Build all packages.
 	pnpm -r build

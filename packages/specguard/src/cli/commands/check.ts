@@ -1,6 +1,5 @@
 import { Command } from 'commander';
 import { execSync } from 'child_process';
-import { APICallError } from '@ai-sdk/provider';
 import { loadConfig } from '../../core/config.js';
 import { runPipeline } from '../../core/pipeline.js';
 import { formatHuman, formatJson } from '../../core/formatter.js';
@@ -51,7 +50,7 @@ export const checkCommand = new Command('check')
         baseURL: config.baseURL,
       });
     } catch (err: unknown) {
-      if (APICallError.isInstance(err) && err.statusCode === 401) {
+      if (err instanceof Error && 'statusCode' in err && (err as { statusCode: unknown }).statusCode === 401) {
         console.error('Error: invalid or missing API key. Set ANTHROPIC_API_KEY or OPENAI_API_KEY.');
       } else {
         console.error(`Error: LLM call failed — ${err instanceof Error ? err.message : String(err)}`);

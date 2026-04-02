@@ -12,3 +12,5 @@ export { judgeFramework } from './tools/judge-framework.js';
 export { judgeDiff } from './tools/judge-diff.js';
 
 export { parseModelId, callLLM } from './llm/provider.js';
+
+export { APICallError } from 'ai';

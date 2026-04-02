@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import { execSync } from 'child_process';
-import { APICallError } from '@ai-sdk/provider';
+import { APICallError } from '@getcorespec/corespec';
 import { loadConfig } from '../../core/config.js';
 import { runPipeline } from '../../core/pipeline.js';
 import { formatHuman, formatJson } from '../../core/formatter.js';

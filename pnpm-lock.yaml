@@ -106,9 +106,6 @@ importers:
 
   packages/specguard:
     dependencies:
-      '@ai-sdk/provider':
-        specifier: ^3.0.8
-        version: 3.0.8
       '@getcorespec/corespec':
         specifier: workspace:*
         version: link:../corespec

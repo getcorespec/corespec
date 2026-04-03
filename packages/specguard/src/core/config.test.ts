@@ -37,6 +37,28 @@ describe('loadConfig', () => {
     expect(config.threshold).toBe(0.5);
   });
 
+  it('returns empty ignore array by default', () => {
+    const config = loadConfig({ cwd: tempDir });
+    expect(config.ignore).toEqual([]);
+  });
+
+  it('parses ignore list from config', () => {
+    writeFileSync(join(tempDir, '.specguard.yml'), 'model: openai/gpt-4o\nignore:\n  - "*.md"\n  - pnpm-lock.yaml\n');
+
+    const config = loadConfig({ cwd: tempDir });
+
+    expect(config.ignore).toEqual(['*.md', 'pnpm-lock.yaml']);
+  });
+
+  it('skips comments in config', () => {
+    writeFileSync(join(tempDir, '.specguard.yml'), '# A comment\nmodel: openai/gpt-4o\nignore:\n  # Lockfiles\n  - "*.lock"\n');
+
+    const config = loadConfig({ cwd: tempDir });
+
+    expect(config.model).toBe('openai/gpt-4o');
+    expect(config.ignore).toEqual(['*.lock']);
+  });
+
   it('CLI flags override config file', () => {
     writeFileSync(join(tempDir, '.specguard.yml'), 'model: openai/gpt-4o\nthreshold: 0.5\n');
 

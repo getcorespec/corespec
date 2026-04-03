@@ -22,6 +22,16 @@ pnpm -r test                     # run all tests
 make install                     # build + install CLIs globally
 ```
 
+## Before committing or creating a PR
+
+Always run the full CI check locally before committing:
+
+```
+pnpm install && pnpm -r build && pnpm -r test
+```
+
+CI runs `pnpm install --frozen-lockfile`, so if you change dependencies you **must** commit the updated `pnpm-lock.yaml` or the build will fail.
+
 ## Key patterns
 
 - Config precedence: CLI flags > .yml > defaults

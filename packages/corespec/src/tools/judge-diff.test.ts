@@ -5,7 +5,7 @@ vi.mock('../llm/provider.js', () => ({
   callLLM: vi.fn(),
 }));
 
-import { judgeDiff } from './judge-diff.js';
+import { judgeDiff, filterDiff } from './judge-diff.js';
 import { callLLM } from '../llm/provider.js';
 
 const mockCallLLM = vi.mocked(callLLM);
@@ -27,6 +27,30 @@ index 0000000..abcdefg
 +export function authMiddleware(req, res, next) {
 +  // middleware implementation
 +}`;
+
+describe('filterDiff', () => {
+  it('removes files matching ignore patterns', () => {
+    const result = filterDiff(sampleDiff, ['*.ts']);
+    expect(result.trim()).toBe('');
+  });
+
+  it('keeps files not matching ignore patterns', () => {
+    const result = filterDiff(sampleDiff, ['*.md']);
+    expect(result).toContain('src/auth/login.ts');
+    expect(result).toContain('src/auth/middleware.ts');
+  });
+
+  it('selectively removes matching files', () => {
+    const result = filterDiff(sampleDiff, ['**/middleware.ts']);
+    expect(result).toContain('src/auth/login.ts');
+    expect(result).not.toContain('src/auth/middleware.ts');
+  });
+
+  it('returns original diff when ignore list is empty', () => {
+    const result = filterDiff(sampleDiff, []);
+    expect(result).toBe(sampleDiff);
+  });
+});
 
 describe('judgeDiff', () => {
   beforeEach(() => {
@@ -77,6 +101,20 @@ describe('judgeDiff', () => {
     const result = await judgeDiff(framework, 'diff --git a/src/utils.ts ...', { model: 'anthropic/claude-sonnet-4-20250514' }, 0.7);
 
     expect(result.result).toBe('pass');
+  });
+
+  it('returns passing result when all files are ignored', async () => {
+    const framework: FrameworkJudgment = {
+      framework: 'none',
+      confidence: 0.1,
+      reasoning: 'No framework',
+    };
+
+    const result = await judgeDiff(framework, sampleDiff, { model: 'anthropic/claude-sonnet-4-20250514' }, 0.7, ['*.ts']);
+
+    expect(result.result).toBe('pass');
+    expect(result.files).toHaveLength(0);
+    expect(mockCallLLM).not.toHaveBeenCalled();
   });
 
   it('includes framework context in prompt', async () => {

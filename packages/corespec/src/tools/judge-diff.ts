@@ -1,5 +1,37 @@
 import type { FrameworkJudgment, DiffJudgment, ModelConfig } from '../types.js';
 import { callLLM } from '../llm/provider.js';
+import picomatch from 'picomatch';
+
+/** Split a unified diff into per-file hunks and drop files matching ignore patterns. */
+export function filterDiff(diff: string, ignore: string[]): string {
+  if (ignore.length === 0) return diff;
+
+  const isIgnored = picomatch(ignore, { matchBase: true });
+  const fileRegex = /^diff --git a\/(.+?) b\//;
+
+  const hunks: string[] = [];
+  let current: string[] = [];
+  let currentIgnored = false;
+
+  for (const line of diff.split('\n')) {
+    const match = line.match(fileRegex);
+    if (match) {
+      if (current.length > 0 && !currentIgnored) {
+        hunks.push(current.join('\n'));
+      }
+      current = [line];
+      currentIgnored = isIgnored(match[1]);
+    } else {
+      current.push(line);
+    }
+  }
+
+  if (current.length > 0 && !currentIgnored) {
+    hunks.push(current.join('\n'));
+  }
+
+  return hunks.join('\n');
+}
 
 function buildPrompt(framework: FrameworkJudgment, diff: string, threshold: number): string {
   const frameworkContext = framework.framework !== 'none'
@@ -21,6 +53,8 @@ For each changed file in the diff, evaluate:
 2. How confident are you that the spec coverage is adequate? (0.0 = no coverage, 1.0 = fully specified)
 3. If coverage is inadequate, briefly explain what's missing.
 
+Structural or wiring changes that don't alter behavior — such as re-exports in barrel/index files, import path changes, or dependency version bumps — do not require spec coverage. Score these 1.0.
+
 Respond with ONLY a JSON object (no markdown, no code fences):
 {
   "files": [
@@ -41,8 +75,15 @@ export async function judgeDiff(
   diff: string,
   config: ModelConfig,
   threshold: number,
+  ignore: string[] = [],
 ): Promise<DiffJudgment> {
-  const prompt = buildPrompt(framework, diff, threshold);
+  const filteredDiff = filterDiff(diff, ignore);
+
+  if (!filteredDiff.trim()) {
+    return { files: [], result: 'pass', threshold };
+  }
+
+  const prompt = buildPrompt(framework, filteredDiff, threshold);
   const raw = await callLLM(config, prompt);
   const response = raw.replace(/^```(?:json)?\s*\n?/gm, '').replace(/\n?```\s*$/gm, '').trim();
 

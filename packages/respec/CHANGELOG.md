@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/getcorespec/corespec/compare/respec-v0.0.2...respec-v0.0.3) (2026-04-03)
+
+
+### Features
+
+* implement respec generate command and simplify model config ([#7](https://github.com/getcorespec/corespec/issues/7)) ([b10e01b](https://github.com/getcorespec/corespec/commit/b10e01b8cdce86cd99b080eb9dbe570fb95c3c96))
+
 ## [0.0.2](https://github.com/getcorespec/corespec/compare/respec-v0.0.1...respec-v0.0.2) (2026-03-02)
 
 

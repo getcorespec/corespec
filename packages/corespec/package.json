@@ -38,14 +38,16 @@
     "node": ">=20"
   },
   "dependencies": {
-    "ai": "^6.0.105",
     "@ai-sdk/anthropic": "^3.0.50",
     "@ai-sdk/openai": "^3.0.37",
+    "ai": "^6.0.105",
     "glob": "^11.0.1",
+    "picomatch": "^4.0.4",
     "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/node": "^22.13.4",
+    "@types/picomatch": "^4.0.3",
     "typescript": "^5.7.3",
     "vitest": "^3.0.5"
   }

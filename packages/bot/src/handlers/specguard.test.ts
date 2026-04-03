@@ -67,7 +67,7 @@ describe('createSpecguardHandler', () => {
     getInstallationOctokit = vi.fn().mockResolvedValue(mockOctokit);
     handler = createSpecguardHandler(getInstallationOctokit);
 
-    mockLoadConfig.mockReturnValue({ model: 'anthropic/claude-haiku-4-5-20251001', threshold: 0.7 });
+    mockLoadConfig.mockReturnValue({ model: 'anthropic/claude-haiku-4-5-20251001', threshold: 0.7, ignore: [] });
   });
 
   it('skips when no installation ID', async () => {

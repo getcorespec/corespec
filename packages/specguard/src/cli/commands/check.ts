@@ -49,6 +49,7 @@ export const checkCommand = new Command('check')
         model: config.model,
         threshold: config.threshold,
         baseURL: config.baseURL,
+        ignore: config.ignore,
       });
     } catch (err: unknown) {
       if (APICallError.isInstance(err) && err.statusCode === 401) {

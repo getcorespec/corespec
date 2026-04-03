@@ -13,4 +13,6 @@ export { judgeDiff } from './tools/judge-diff.js';
 
 export { parseModelId, callLLM } from './llm/provider.js';
 
+export { filterDiff } from './tools/judge-diff.js';
+
 export { APICallError } from 'ai';

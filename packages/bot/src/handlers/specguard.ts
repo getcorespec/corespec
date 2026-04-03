@@ -63,6 +63,7 @@ export function createSpecguardHandler(
         diff: diff as unknown as string,
         model: config.model,
         threshold: config.threshold,
+        ignore: config.ignore,
       });
 
       const conclusion = result.diff.result === 'pass' ? 'success' : 'failure';

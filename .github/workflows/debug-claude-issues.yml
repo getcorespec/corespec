@@ -1,0 +1,30 @@
+name: Debug Claude Issues
+on:
+  issues:
+    types: [labeled]
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump context
+        run: |
+          echo "=== Top-level ==="
+          echo "event_name: ${{ github.event_name }}"
+          echo "action: ${{ github.event.action }}"
+          echo "actor: ${{ github.actor }}"
+          echo ""
+          echo "=== Issue fields ==="
+          echo "issue.author_association: ${{ github.event.issue.author_association }}"
+          echo "issue.user.login: ${{ github.event.issue.user.login }}"
+          echo ""
+          echo "=== Body match ==="
+          echo "body contains @claude: ${{ contains(github.event.issue.body, '@claude') }}"
+          echo ""
+          echo "=== Null context probes ==="
+          echo "comment.author_association: '${{ github.event.comment.author_association }}'"
+          echo "review.author_association: '${{ github.event.review.author_association }}'"
+          echo ""
+          echo "=== If clause simulation ==="
+          echo "first: ${{ (github.event_name == 'issues' && contains(github.event.issue.body, '@claude')) }}"
+          echo "second (issue MEMBER): ${{ github.event.issue.author_association == 'MEMBER' }}"
+          echo "second (issue OWNER): ${{ github.event.issue.author_association == 'OWNER' }}"

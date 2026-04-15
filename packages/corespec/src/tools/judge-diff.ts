@@ -85,7 +85,9 @@ function buildPrompt(
     ? `\nExisting spec documents in the repository:\n${specs.map(s => `--- ${s.path} ---\n${s.content}`).join('\n\n')}\n`
     : '';
 
-  return `You are a spec coverage analysis tool. Given a git diff and information about the repository's spec framework, evaluate whether each changed file has adequate specification coverage.
+  return `You are a spec coverage analysis tool. Respond with ONLY a JSON object matching the schema below. Do not include any text, headings, markdown, or commentary outside the JSON object.
+
+Evaluation task: given a git diff and the repository's spec framework, score each changed file on how adequately specs cover its behavior.
 
 Framework context:
 ${frameworkContext}
@@ -104,7 +106,7 @@ Structural or wiring changes that don't alter behavior — such as re-exports in
 
 Test files (e.g. *.test.ts, *.spec.ts) are self-documenting and do not require separate specs. Score these 1.0 with reason "test file, self-documenting".
 
-Respond with ONLY a JSON object (no markdown, no code fences):
+Output format — respond with EXACTLY this JSON object, nothing before or after:
 {
   "files": [
     {
@@ -116,7 +118,9 @@ Respond with ONLY a JSON object (no markdown, no code fences):
   ],
   "result": "<'pass' if all files pass, 'fail' if any file fails>",
   "threshold": ${threshold}
-}`;
+}
+
+Begin your response with the opening brace '{'. Do not add any preamble.`;
 }
 
 export async function judgeDiff(

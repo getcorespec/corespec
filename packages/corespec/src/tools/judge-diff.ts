@@ -3,6 +3,33 @@ import { callLLM } from '../llm/provider.js';
 import picomatch from 'picomatch';
 
 /**
+ * Thrown when the LLM returns a response that is not parseable JSON.
+ * Carries the raw response and model name so callers can surface actionable
+ * error messages instead of bare JSON.parse output.
+ */
+export class LlmJsonParseError extends Error {
+  public readonly rawResponse: string;
+  public readonly model: string;
+  public readonly parseError: string;
+
+  constructor(parseError: string, rawResponse: string, model: string) {
+    const preview = rawResponse.trim().slice(0, 200).replace(/\s+/g, ' ');
+    const suffix = rawResponse.length > 200 ? '…' : '';
+    super(
+      `LLM returned a non-JSON response (model: ${model}). ` +
+        `JSON parse error: ${parseError}. ` +
+        `Response preview: "${preview}${suffix}". ` +
+        `The model likely ignored the JSON-only instruction. Try a more capable model ` +
+        `(e.g. claude-sonnet-4) or reduce the prompt size by tightening the ignore list in .specguard.yml.`,
+    );
+    this.name = 'LlmJsonParseError';
+    this.rawResponse = rawResponse;
+    this.model = model;
+    this.parseError = parseError;
+  }
+}
+
+/**
  * Extracts the first balanced JSON object from an LLM response, tolerating
  * leading/trailing prose, markdown code fences, or commentary.
  */
@@ -141,7 +168,13 @@ export async function judgeDiff(
   const raw = await callLLM(config, prompt);
   const response = extractJsonObject(raw);
 
-  const parsed = JSON.parse(response) as { files?: Array<{ file: string; score?: number; reason?: string; gap?: string }>; threshold?: number };
+  let parsed: { files?: Array<{ file: string; score?: number; reason?: string; gap?: string }>; threshold?: number };
+  try {
+    parsed = JSON.parse(response);
+  } catch (err) {
+    const parseMessage = err instanceof Error ? err.message : String(err);
+    throw new LlmJsonParseError(parseMessage, raw, config.model);
+  }
 
   const files = (parsed.files ?? []).map(f => ({
     file: f.file,

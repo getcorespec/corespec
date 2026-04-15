@@ -10,7 +10,7 @@ export type {
 
 export { checkFramework } from './tools/check-framework.js';
 export { judgeFramework } from './tools/judge-framework.js';
-export { judgeDiff } from './tools/judge-diff.js';
+export { judgeDiff, LlmJsonParseError } from './tools/judge-diff.js';
 export { loadSpecs } from './tools/load-specs.js';
 
 export { parseModelId, callLLM } from './llm/provider.js';

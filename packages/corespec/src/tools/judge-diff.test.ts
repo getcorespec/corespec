@@ -5,7 +5,7 @@ vi.mock('../llm/provider.js', () => ({
   callLLM: vi.fn(),
 }));
 
-import { judgeDiff, filterDiff, extractJsonObject } from './judge-diff.js';
+import { judgeDiff, filterDiff, extractJsonObject, LlmJsonParseError } from './judge-diff.js';
 import { callLLM } from '../llm/provider.js';
 
 const mockCallLLM = vi.mocked(callLLM);
@@ -137,6 +137,32 @@ describe('judgeDiff', () => {
     const promptArg = mockCallLLM.mock.calls[0][1];
     expect(promptArg).toContain('openspec/specs/auth/spec.md');
     expect(promptArg).toContain('Auth Specification');
+  });
+
+  it('throws LlmJsonParseError with actionable context when LLM returns non-JSON', async () => {
+    const framework: FrameworkJudgment = {
+      framework: 'openspec',
+      confidence: 0.95,
+      reasoning: 'OpenSpec detected',
+    };
+
+    const bogusResponse = '# Spec Coverage Analysis\n\nI reviewed the diff and here are my findings:\n- Foo looks good';
+    mockCallLLM.mockResolvedValue(bogusResponse);
+
+    try {
+      await judgeDiff(framework, sampleDiff, { model: 'anthropic/claude-haiku-4-5' }, 0.7);
+      expect.fail('expected judgeDiff to throw');
+    } catch (err) {
+      expect(err).toBeInstanceOf(LlmJsonParseError);
+      const typed = err as LlmJsonParseError;
+      expect(typed.model).toBe('anthropic/claude-haiku-4-5');
+      expect(typed.rawResponse).toBe(bogusResponse);
+      // Surfaces the model, a response preview, and remediation advice so users
+      // don't just see a raw JSON.parse stack trace.
+      expect(typed.message).toContain('claude-haiku-4-5');
+      expect(typed.message).toContain('Spec Coverage Analysis');
+      expect(typed.message).toContain('Try a more capable model');
+    }
   });
 
   it('falls back to gap field when reason is not provided (backward compat)', async () => {

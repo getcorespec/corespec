@@ -71,6 +71,19 @@ When judging a diff, the pipeline SHALL load the framework's spec documents from
 - **THEN** `loadSpecs` SHALL return an empty array
 - **AND** the prompt SHALL omit the "Existing spec documents" section
 
+### Requirement: Non-JSON LLM responses produce actionable error messages
+When the LLM returns a response that is not parseable JSON, `judgeDiff` SHALL throw `LlmJsonParseError` carrying the raw response, the model name, and the underlying parse error. The error message SHALL include (1) the model name, (2) a short preview of the raw response, and (3) remediation guidance (e.g. try a more capable model, reduce prompt size). Bare `JSON.parse` errors SHALL NOT surface to CLI users.
+
+#### Scenario: LLM returns markdown prose instead of JSON
+- **WHEN** the LLM responds with `# Analysis\n\nThe diff looks good`
+- **THEN** `judgeDiff` SHALL throw `LlmJsonParseError`
+- **AND** the error message SHALL include the model name, a preview of the response, and guidance to try a more capable model or reduce prompt size
+
+#### Scenario: CLI surfaces the error cleanly
+- **WHEN** `specguard check` catches an `LlmJsonParseError`
+- **THEN** the CLI SHALL print `Error: <message>` with the actionable context
+- **AND** SHALL NOT print the raw `SyntaxError: Unexpected token` stack
+
 ### Requirement: Per-file reason field explains both passes and fails
 Every `FileCoverage` entry returned by `judgeDiff` SHALL have a `reason` field containing a one-line explanation of the score. For passing files it describes the covering spec or exemption; for failing files it describes the gap.
 

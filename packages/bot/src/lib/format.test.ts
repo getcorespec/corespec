@@ -15,7 +15,7 @@ function makeResult(overrides: { result?: 'pass' | 'fail'; files?: any[] } = {})
     },
     diff: {
       files: overrides.files ?? [
-        { file: 'src/index.ts', score: 0.9, pass: true },
+        { file: 'src/index.ts', score: 0.9, pass: true, reason: 'covered by index spec' },
       ],
       result: overrides.result ?? 'pass',
       threshold: 0.7,
@@ -35,11 +35,26 @@ describe('formatPrComment', () => {
   it('formats a failing result', () => {
     const md = formatPrComment(makeResult({
       result: 'fail',
-      files: [{ file: 'src/bad.ts', score: 0.3, pass: false, gap: 'Missing tests' }],
+      files: [{ file: 'src/bad.ts', score: 0.3, pass: false, reason: 'Missing tests' }],
     }));
     expect(md).toContain(':x: **specguard: FAIL**');
     expect(md).toContain('`src/bad.ts`');
     expect(md).toContain('Missing tests');
+  });
+
+  it('renders openspec framework as a hyperlink to the spec directory on the PR head', () => {
+    const md = formatPrComment(makeResult(), {
+      repoFullName: 'getcorespec/corespec',
+      headRef: 'feature/x',
+    });
+    expect(md).toContain(
+      '**Framework:** [openspec](https://github.com/getcorespec/corespec/tree/feature/x/openspec/specs)',
+    );
+  });
+
+  it('includes Reason header column', () => {
+    const md = formatPrComment(makeResult());
+    expect(md).toContain('| File | Score | Status | Reason |');
   });
 });
 
@@ -56,8 +71,8 @@ describe('formatCheckRunOutput', () => {
     const output = formatCheckRunOutput(makeResult({
       result: 'fail',
       files: [
-        { file: 'a.ts', score: 0.9, pass: true },
-        { file: 'b.ts', score: 0.3, pass: false, gap: 'No tests' },
+        { file: 'a.ts', score: 0.9, pass: true, reason: 'covered' },
+        { file: 'b.ts', score: 0.3, pass: false, reason: 'No tests' },
       ],
     }));
     expect(output.title).toBe('specguard: FAIL');

@@ -67,9 +67,10 @@ export function createSpecguardHandler(
       });
 
       const conclusion = result.diff.result === 'pass' ? 'success' : 'failure';
-      const output = formatCheckRunOutput(result);
+      const prCtx = { repoFullName: repo.full_name, headRef: pr.head.ref };
+      const output = formatCheckRunOutput(result, prCtx);
       await updateCheckRun(octokit, owner, repoName, checkRunId, conclusion, output);
-      await upsertComment(octokit, owner, repoName, pr.number, formatPrComment(result));
+      await upsertComment(octokit, owner, repoName, pr.number, formatPrComment(result, prCtx));
 
       console.log(`[specguard] PR #${pr.number}: ${conclusion}`);
     } catch (err) {

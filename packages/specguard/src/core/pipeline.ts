@@ -2,6 +2,7 @@ import {
   checkFramework,
   judgeFramework,
   judgeDiff,
+  loadSpecs,
   type FrameworkCheckResult,
   type FrameworkJudgment,
   type DiffJudgment,
@@ -29,7 +30,9 @@ export async function runPipeline(options: PipelineOptions): Promise<PipelineRes
 
   const framework = await judgeFramework(signals, modelConfig);
 
-  const diff = await judgeDiff(framework, options.diff, modelConfig, options.threshold, options.ignore);
+  const specs = loadSpecs(options.repoRoot, framework.framework);
+
+  const diff = await judgeDiff(framework, options.diff, modelConfig, options.threshold, options.ignore, specs);
 
   return { signals, framework, diff };
 }

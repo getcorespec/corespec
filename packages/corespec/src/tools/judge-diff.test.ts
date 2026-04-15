@@ -66,8 +66,8 @@ describe('judgeDiff', () => {
 
     mockCallLLM.mockResolvedValueOnce(JSON.stringify({
       files: [
-        { file: 'src/auth/login.ts', score: 0.85, pass: true },
-        { file: 'src/auth/middleware.ts', score: 0.2, pass: false, gap: 'no spec covers auth middleware' },
+        { file: 'src/auth/login.ts', score: 0.85, pass: true, reason: 'covered by auth spec' },
+        { file: 'src/auth/middleware.ts', score: 0.2, pass: false, reason: 'no spec covers auth middleware' },
       ],
       result: 'fail',
       threshold: 0.7,
@@ -78,9 +78,58 @@ describe('judgeDiff', () => {
     expect(result.files).toHaveLength(2);
     expect(result.files[0].file).toBe('src/auth/login.ts');
     expect(result.files[0].pass).toBe(true);
+    expect(result.files[0].reason).toBe('covered by auth spec');
     expect(result.files[1].pass).toBe(false);
-    expect(result.files[1].gap).toBeTruthy();
+    expect(result.files[1].reason).toBe('no spec covers auth middleware');
     expect(result.result).toBe('fail');
+  });
+
+  it('includes existing spec documents in the LLM prompt', async () => {
+    const framework: FrameworkJudgment = {
+      framework: 'openspec',
+      confidence: 0.95,
+      reasoning: 'OpenSpec detected',
+    };
+
+    mockCallLLM.mockResolvedValueOnce(JSON.stringify({
+      files: [],
+      result: 'pass',
+      threshold: 0.7,
+    }));
+
+    await judgeDiff(
+      framework,
+      sampleDiff,
+      { model: 'anthropic/claude-sonnet-4-20250514' },
+      0.7,
+      [],
+      [
+        { path: 'openspec/specs/auth/spec.md', content: '# Auth Specification\nRequirement: users can log in' },
+      ],
+    );
+
+    const promptArg = mockCallLLM.mock.calls[0][1];
+    expect(promptArg).toContain('openspec/specs/auth/spec.md');
+    expect(promptArg).toContain('Auth Specification');
+  });
+
+  it('falls back to gap field when reason is not provided (backward compat)', async () => {
+    const framework: FrameworkJudgment = {
+      framework: 'none',
+      confidence: 0.1,
+      reasoning: 'No framework',
+    };
+
+    mockCallLLM.mockResolvedValueOnce(JSON.stringify({
+      files: [
+        { file: 'a.ts', score: 0.3, pass: false, gap: 'missing spec' },
+      ],
+      result: 'fail',
+      threshold: 0.7,
+    }));
+
+    const result = await judgeDiff(framework, sampleDiff, { model: 'anthropic/claude-sonnet-4-20250514' }, 0.7);
+    expect(result.files[0].reason).toBe('missing spec');
   });
 
   it('passes when all files meet threshold', async () => {
@@ -92,7 +141,7 @@ describe('judgeDiff', () => {
 
     mockCallLLM.mockResolvedValueOnce(JSON.stringify({
       files: [
-        { file: 'src/utils.ts', score: 0.9, pass: true },
+        { file: 'src/utils.ts', score: 0.9, pass: true, reason: 'utility, no spec needed' },
       ],
       result: 'pass',
       threshold: 0.7,

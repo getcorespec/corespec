@@ -1,7 +1,8 @@
 # diff-filtering Specification
 
 ## Purpose
-TBD - created by archiving change specguard-ignore-list. Update Purpose after archive.
+Controls what specguard's judge-diff tool sends to the LLM and how the LLM returns its verdict. Covers (1) filtering files out of the diff via the `ignore` config, (2) loading existing spec documents from the repo so the LLM can cross-reference them, and (3) the per-file `reason` field describing why each file passed or failed.
+
 ## Requirements
 ### Requirement: Config supports ignore patterns
 The `.specguard.yml` config file SHALL support an `ignore` key containing a list of glob patterns. Each pattern matches file paths in the diff.
@@ -43,4 +44,45 @@ The judge-diff prompt SHALL instruct the LLM to score structural/wiring changes 
 #### Scenario: Re-export added to barrel file
 - **WHEN** a diff adds a re-export line to an index.ts barrel file
 - **THEN** the LLM is guided to score it as 1.0 (no spec needed)
+
+### Requirement: Prompt exempts test files from requiring separate specs
+The judge-diff prompt SHALL instruct the LLM to score test files (matching `*.test.*` or `*.spec.*` patterns) as passing with reason "test file, self-documenting", because test files document their own behavior.
+
+#### Scenario: Test file in diff
+- **WHEN** a diff modifies `src/foo.test.ts`
+- **THEN** the LLM SHALL score it 1.0 with a reason noting it is a test file
+
+### Requirement: Existing spec documents are supplied to the LLM as context
+When judging a diff, the pipeline SHALL load the framework's spec documents from disk and pass them to `judgeDiff` via the `specs` parameter. The `judgeDiff` function SHALL include these documents in the LLM prompt under an "Existing spec documents" section so the LLM can assess whether changed code is covered.
+
+#### Scenario: OpenSpec framework with spec files on disk
+- **WHEN** the detected framework is `openspec`
+- **AND** `openspec/specs/**/*.md` files exist in the repo
+- **THEN** the pipeline SHALL load each spec file's contents and path
+- **AND** pass them to `judgeDiff` as `SpecDocument[]`
+
+#### Scenario: Spec documents appear in the LLM prompt
+- **WHEN** `judgeDiff` is called with a non-empty `specs` array
+- **THEN** the built prompt SHALL contain each spec's path and full content
+- **AND** instruct the LLM to cross-reference the diff against those specs
+
+#### Scenario: Unknown framework
+- **WHEN** the detected framework is not a recognised one with a known spec directory
+- **THEN** `loadSpecs` SHALL return an empty array
+- **AND** the prompt SHALL omit the "Existing spec documents" section
+
+### Requirement: Per-file reason field explains both passes and fails
+Every `FileCoverage` entry returned by `judgeDiff` SHALL have a `reason` field containing a one-line explanation of the score. For passing files it describes the covering spec or exemption; for failing files it describes the gap.
+
+#### Scenario: Passing file with covering spec
+- **WHEN** the LLM scores `src/foo.ts` at 0.9 because it's covered by `openspec/specs/foo/spec.md`
+- **THEN** the returned `FileCoverage.reason` SHALL be a one-line explanation referencing the spec (e.g. "covered by foo spec")
+
+#### Scenario: Failing file
+- **WHEN** the LLM scores `src/bar.ts` at 0.3 with no matching spec
+- **THEN** the returned `FileCoverage.reason` SHALL describe what spec coverage is missing
+
+#### Scenario: Backward compatibility with legacy `gap` field
+- **WHEN** an older LLM response provides `gap` instead of `reason`
+- **THEN** `judgeDiff` SHALL populate `reason` from the `gap` value
 

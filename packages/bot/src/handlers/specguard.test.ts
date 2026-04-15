@@ -89,7 +89,7 @@ describe('createSpecguardHandler', () => {
       signals: { signals: [], candidates: [] },
       framework: { framework: 'openspec', confidence: 0.95, reasoning: '' },
       diff: {
-        files: [{ file: 'src/index.ts', score: 0.9, pass: true }],
+        files: [{ file: 'src/index.ts', score: 0.9, pass: true, reason: 'covered' }],
         result: 'pass',
         threshold: 0.7,
       },

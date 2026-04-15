@@ -2,6 +2,44 @@ import type { FrameworkJudgment, DiffJudgment, ModelConfig, SpecDocument } from 
 import { callLLM } from '../llm/provider.js';
 import picomatch from 'picomatch';
 
+/**
+ * Extracts the first balanced JSON object from an LLM response, tolerating
+ * leading/trailing prose, markdown code fences, or commentary.
+ */
+export function extractJsonObject(raw: string): string {
+  const stripped = raw.replace(/```(?:json)?\s*/g, '').replace(/\s*```/g, '');
+  const start = stripped.indexOf('{');
+  if (start === -1) return stripped.trim();
+
+  let depth = 0;
+  let inString = false;
+  let escape = false;
+  for (let i = start; i < stripped.length; i++) {
+    const ch = stripped[i];
+    if (inString) {
+      if (escape) {
+        escape = false;
+      } else if (ch === '\\') {
+        escape = true;
+      } else if (ch === '"') {
+        inString = false;
+      }
+      continue;
+    }
+    if (ch === '"') {
+      inString = true;
+    } else if (ch === '{') {
+      depth++;
+    } else if (ch === '}') {
+      depth--;
+      if (depth === 0) {
+        return stripped.slice(start, i + 1);
+      }
+    }
+  }
+  return stripped.slice(start).trim();
+}
+
 /** Split a unified diff into per-file hunks and drop files matching ignore patterns. */
 export function filterDiff(diff: string, ignore: string[]): string {
   if (ignore.length === 0) return diff;
@@ -97,7 +135,7 @@ export async function judgeDiff(
 
   const prompt = buildPrompt(framework, filteredDiff, threshold, specs);
   const raw = await callLLM(config, prompt);
-  const response = raw.replace(/^```(?:json)?\s*\n?/gm, '').replace(/\n?```\s*$/gm, '').trim();
+  const response = extractJsonObject(raw);
 
   const parsed = JSON.parse(response) as { files?: Array<{ file: string; score?: number; reason?: string; gap?: string }>; threshold?: number };
 

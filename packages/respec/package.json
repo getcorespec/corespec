@@ -36,6 +36,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
+    "prestart": "tsc",
+    "start": "node ./bin/respec.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },

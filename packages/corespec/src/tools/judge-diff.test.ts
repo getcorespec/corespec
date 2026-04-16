@@ -6,6 +6,7 @@ vi.mock('../llm/provider.js', () => ({
 }));
 
 import { judgeDiff, filterDiff } from './judge-diff.js';
+import { LlmJsonParseError } from '../llm/json-response.js';
 import { callLLM } from '../llm/provider.js';
 
 const mockCallLLM = vi.mocked(callLLM);
@@ -66,8 +67,8 @@ describe('judgeDiff', () => {
 
     mockCallLLM.mockResolvedValueOnce(JSON.stringify({
       files: [
-        { file: 'src/auth/login.ts', score: 0.85, pass: true },
-        { file: 'src/auth/middleware.ts', score: 0.2, pass: false, gap: 'no spec covers auth middleware' },
+        { file: 'src/auth/login.ts', score: 0.85, pass: true, reason: 'covered by auth spec' },
+        { file: 'src/auth/middleware.ts', score: 0.2, pass: false, reason: 'no spec covers auth middleware' },
       ],
       result: 'fail',
       threshold: 0.7,
@@ -78,9 +79,84 @@ describe('judgeDiff', () => {
     expect(result.files).toHaveLength(2);
     expect(result.files[0].file).toBe('src/auth/login.ts');
     expect(result.files[0].pass).toBe(true);
+    expect(result.files[0].reason).toBe('covered by auth spec');
     expect(result.files[1].pass).toBe(false);
-    expect(result.files[1].gap).toBeTruthy();
+    expect(result.files[1].reason).toBe('no spec covers auth middleware');
     expect(result.result).toBe('fail');
+  });
+
+  it('includes existing spec documents in the LLM prompt', async () => {
+    const framework: FrameworkJudgment = {
+      framework: 'openspec',
+      confidence: 0.95,
+      reasoning: 'OpenSpec detected',
+    };
+
+    mockCallLLM.mockResolvedValueOnce(JSON.stringify({
+      files: [],
+      result: 'pass',
+      threshold: 0.7,
+    }));
+
+    await judgeDiff(
+      framework,
+      sampleDiff,
+      { model: 'anthropic/claude-sonnet-4-20250514' },
+      0.7,
+      [],
+      [
+        { path: 'openspec/specs/auth/spec.md', content: '# Auth Specification\nRequirement: users can log in' },
+      ],
+    );
+
+    const promptArg = mockCallLLM.mock.calls[0][1];
+    expect(promptArg).toContain('openspec/specs/auth/spec.md');
+    expect(promptArg).toContain('Auth Specification');
+  });
+
+  it('throws LlmJsonParseError with actionable context when LLM returns non-JSON', async () => {
+    const framework: FrameworkJudgment = {
+      framework: 'openspec',
+      confidence: 0.95,
+      reasoning: 'OpenSpec detected',
+    };
+
+    const bogusResponse = '# Spec Coverage Analysis\n\nI reviewed the diff and here are my findings:\n- Foo looks good';
+    mockCallLLM.mockResolvedValue(bogusResponse);
+
+    try {
+      await judgeDiff(framework, sampleDiff, { model: 'anthropic/claude-haiku-4-5' }, 0.7);
+      expect.fail('expected judgeDiff to throw');
+    } catch (err) {
+      expect(err).toBeInstanceOf(LlmJsonParseError);
+      const typed = err as LlmJsonParseError;
+      expect(typed.model).toBe('anthropic/claude-haiku-4-5');
+      expect(typed.rawResponse).toBe(bogusResponse);
+      // Surfaces the model, a response preview, and remediation advice so users
+      // don't just see a raw JSON.parse stack trace.
+      expect(typed.message).toContain('claude-haiku-4-5');
+      expect(typed.message).toContain('Spec Coverage Analysis');
+      expect(typed.message).toContain('Try a more capable model');
+    }
+  });
+
+  it('falls back to gap field when reason is not provided (backward compat)', async () => {
+    const framework: FrameworkJudgment = {
+      framework: 'none',
+      confidence: 0.1,
+      reasoning: 'No framework',
+    };
+
+    mockCallLLM.mockResolvedValueOnce(JSON.stringify({
+      files: [
+        { file: 'a.ts', score: 0.3, pass: false, gap: 'missing spec' },
+      ],
+      result: 'fail',
+      threshold: 0.7,
+    }));
+
+    const result = await judgeDiff(framework, sampleDiff, { model: 'anthropic/claude-sonnet-4-20250514' }, 0.7);
+    expect(result.files[0].reason).toBe('missing spec');
   });
 
   it('passes when all files meet threshold', async () => {
@@ -92,7 +168,7 @@ describe('judgeDiff', () => {
 
     mockCallLLM.mockResolvedValueOnce(JSON.stringify({
       files: [
-        { file: 'src/utils.ts', score: 0.9, pass: true },
+        { file: 'src/utils.ts', score: 0.9, pass: true, reason: 'utility, no spec needed' },
       ],
       result: 'pass',
       threshold: 0.7,

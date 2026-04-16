@@ -12,7 +12,7 @@ export function formatJson(result: PipelineResult): string {
       file: f.file,
       score: f.score,
       pass: f.pass,
-      ...(f.gap ? { gap: f.gap } : {}),
+      reason: f.reason,
     })),
     result: result.diff.result,
     threshold: result.diff.threshold,
@@ -44,8 +44,8 @@ export function formatHuman(result: PipelineResult): string {
     const icon = file.pass ? chalk.green('\u2713') : chalk.red('\u2717');
     const name = file.file.length > 40 ? '\u2026' + file.file.slice(-39) : file.file;
     lines.push(`  ${name.padEnd(41)} ${score}  ${icon}`);
-    if (file.gap) {
-      lines.push(chalk.dim(`    ${file.gap}`));
+    if (file.reason) {
+      lines.push(chalk.dim(`    ${file.reason}`));
     }
   }
 

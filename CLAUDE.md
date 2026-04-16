@@ -55,6 +55,25 @@ This separation prevents CLI option explosion as model parameters grow.
 
 `specguard hook install` writes `.git/hooks/pre-commit` using `npx specguard check --staged`. The `hook` command uses commander's subcommand pattern: `hookCommand.addCommand(installHookCommand)`. Subsequent subcommands (e.g. `hook uninstall`) follow the same pattern.
 
+## Running CLIs during development
+
+Each CLI package (`specguard`, `respec`) has a `start` script that builds then runs:
+
+```bash
+cd packages/specguard
+pnpm start check main..HEAD       # one-shot build + run
+pnpm start check --staged
+pnpm start hook install
+```
+
+**pnpm quirk**: don't put `--` between `start` and the CLI args — pnpm passes `--` through as a literal token. `pnpm start check ...` works; `pnpm start -- check ...` does not.
+
+The script is split as `prestart: tsc` + `start: node ./bin/<name>.js` so args reach the binary cleanly.
+
+### Terminal title
+
+On TTY output, the CLI sets the terminal title to the invoked subcommand (e.g. `specguard check`) via the xterm escape sequence `\x1b]2;…\x07`. This makes terminal screenshots self-labelling. It's a no-op for non-TTY output (CI, pipes) so captured logs stay clean.
+
 ## Terminal screenshots
 
 For README screenshots using shellwright, use a minimal prompt (`$ `) with no path/git info:
@@ -63,6 +82,8 @@ For README screenshots using shellwright, use a minimal prompt (`$ `) with no pa
 # Start session with minimal prompt
 export PS1='$ '
 ```
+
+Run the CLI as `specguard check …` (global bin via `make install`) rather than `pnpm start …` so the title bar and prompt both read as the end-user flow.
 
 If the command needs to be faked (e.g. LLM calls unavailable), alias the command name:
 

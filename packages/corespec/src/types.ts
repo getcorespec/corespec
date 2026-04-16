@@ -34,8 +34,16 @@ export interface FileCoverage {
   score: number;
   /** Whether this file passes the threshold */
   pass: boolean;
-  /** Explanation of what spec coverage is missing, if any */
-  gap?: string;
+  /** One-line explanation of the score — describes coverage for passing files, gaps for failing files */
+  reason: string;
+}
+
+/** A spec document loaded from the repository, passed to judge-diff as context */
+export interface SpecDocument {
+  /** File path relative to repo root (e.g. "openspec/specs/hook-install/spec.md") */
+  path: string;
+  /** Full spec content */
+  content: string;
 }
 
 /** Output of judge-diff (LLM) */

@@ -37,6 +37,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
+    "prestart": "tsc",
+    "start": "node ./bin/specguard.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },

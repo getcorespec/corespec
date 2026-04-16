@@ -10,8 +10,8 @@ const sampleResult: PipelineResult = {
   },
   diff: {
     files: [
-      { file: 'src/auth/login.ts', score: 0.85, pass: true },
-      { file: 'src/auth/middleware.ts', score: 0.2, pass: false, gap: 'no spec covers auth middleware' },
+      { file: 'src/auth/login.ts', score: 0.85, pass: true, reason: 'covered by auth spec' },
+      { file: 'src/auth/middleware.ts', score: 0.2, pass: false, reason: 'no spec covers auth middleware' },
     ],
     result: 'fail',
     threshold: 0.7,

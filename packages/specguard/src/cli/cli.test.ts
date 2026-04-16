@@ -37,4 +37,20 @@ describe('specguard CLI', () => {
     expect(output).toContain('--model');
     expect(output).toContain('--output');
   });
+
+  it('shows hook command in help', () => {
+    const output = execFileSync('node', [bin, '--help'], {
+      encoding: 'utf-8',
+    });
+    expect(output).toContain('hook');
+  });
+
+  it('shows hook install subcommand help', () => {
+    const output = execFileSync('node', [bin, 'hook', 'install', '--help'], {
+      encoding: 'utf-8',
+    });
+    expect(output).toContain('pre-push');
+    expect(output).toContain('--pre-commit');
+    expect(output).toContain('--force');
+  });
 });

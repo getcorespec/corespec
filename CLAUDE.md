@@ -76,20 +76,52 @@ On TTY output, the CLI sets the terminal title to the invoked subcommand (e.g. `
 
 ## Terminal screenshots
 
-For README screenshots using shellwright, use a minimal prompt (`$ `) with no path/git info:
+### Inventory — which file shows what
+
+| File | Shows | Refresh when |
+|------|-------|--------------|
+| `packages/specguard/docs/screenshots/specguard-check-fail.png` | `specguard check main..HEAD` output, failing case, with per-file `Reason` lines under each failing row | CLI output format changes (columns, colours, reason text) |
+| `packages/specguard/docs/screenshots/failed-pr.png` | GitHub PR screenshot showing the specguard check failing + its PR comment | PR comment format changes (framework hyperlink, Reason column) |
+| `packages/bot/docs/screenshots/bot-pr-comment.png` | PR comment with the coverage table: framework name rendered as a markdown hyperlink, `File / Score / Status / Reason` columns, reasons populated for passing rows too | `formatPrComment` output changes |
+| `packages/bot/docs/screenshots/bot-check-run.png` | GitHub check-run "Details" view produced by `formatCheckRunOutput` | Check-run text changes |
+| `packages/respec/docs/screenshots/respec-generate.png` | `respec generate` CLI output | respec CLI changes |
+| `packages/respec/docs/screenshots/respec-pr.png` | PR produced by respec | respec PR behaviour changes |
+
+Target width in README is 420px. Always verify the new PNG renders cleanly at that width before committing.
+
+### Capture setup
+
+Use `make install` (or `pnpm -r build && npm link`) first so the global `specguard` / `respec` bins are current — this makes the prompt read like an end-user flow, and the CLI sets its terminal title (`specguard check`, etc.) automatically on TTY.
+
+Minimal prompt with no path or git info:
 
 ```bash
-# Start session with minimal prompt
 export PS1='$ '
 ```
 
-Run the CLI as `specguard check …` (global bin via `make install`) rather than `pnpm start …` so the title bar and prompt both read as the end-user flow.
+Use `toolkit:shellwright` to capture the session:
 
-If the command needs to be faked (e.g. LLM calls unavailable), alias the command name:
+1. `shell_start` to open a recording shell in the iTerm window where you'll demo.
+2. `shell_record_start` with a meaningful name (e.g. `specguard-check-fail`).
+3. Run the command you want to capture.
+4. `shell_record_stop` — this writes the PNG.
+5. Move the file into the matching `packages/*/docs/screenshots/` folder, overwriting the old PNG with the same filename so READMEs don't need relinking.
+
+### Reproducing a failing `specguard check` without a real API call
+
+If your Anthropic key is expired, or you want deterministic output, either (a) point `baseURL` at a local mock server that returns a canned judge-diff JSON payload, or (b) alias `specguard` to a tsx script that bypasses the LLM:
+
+```bash
+alias specguard='npx tsx scratch/demo-specguard.ts'
+```
+
+The same pattern applies to `respec`:
 
 ```bash
 alias respec='npx tsx scratch/demo-respec.ts'
 ```
+
+Keep the demo scripts in `scratch/` (gitignored) so they don't ship.
 
 ## CLI progress patterns
 

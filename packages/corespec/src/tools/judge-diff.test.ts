@@ -5,7 +5,8 @@ vi.mock('../llm/provider.js', () => ({
   callLLM: vi.fn(),
 }));
 
-import { judgeDiff, filterDiff, extractJsonObject, LlmJsonParseError } from './judge-diff.js';
+import { judgeDiff, filterDiff } from './judge-diff.js';
+import { LlmJsonParseError } from '../llm/json-response.js';
 import { callLLM } from '../llm/provider.js';
 
 const mockCallLLM = vi.mocked(callLLM);
@@ -49,32 +50,6 @@ describe('filterDiff', () => {
   it('returns original diff when ignore list is empty', () => {
     const result = filterDiff(sampleDiff, []);
     expect(result).toBe(sampleDiff);
-  });
-});
-
-describe('extractJsonObject', () => {
-  it('extracts a plain JSON object', () => {
-    expect(extractJsonObject('{"a":1}')).toBe('{"a":1}');
-  });
-
-  it('strips markdown code fences', () => {
-    expect(extractJsonObject('```json\n{"a":1}\n```')).toBe('{"a":1}');
-  });
-
-  it('ignores leading prose', () => {
-    expect(extractJsonObject('Here is my answer:\n{"a":1}')).toBe('{"a":1}');
-  });
-
-  it('ignores trailing prose after the JSON object', () => {
-    expect(extractJsonObject('{"a":1}\n\nLet me know if you need more.')).toBe('{"a":1}');
-  });
-
-  it('handles nested objects', () => {
-    expect(extractJsonObject('junk { "a": { "b": 1 } } trailing')).toBe('{ "a": { "b": 1 } }');
-  });
-
-  it('ignores braces inside strings', () => {
-    expect(extractJsonObject('{"a":"has { brace"}')).toBe('{"a":"has { brace"}');
   });
 });
 

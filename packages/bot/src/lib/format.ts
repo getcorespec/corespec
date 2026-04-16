@@ -1,12 +1,17 @@
 import type { PipelineResult } from '@getcorespec/specguard';
 
-// Maps a framework name to the repo directory holding its specs. Used to build
-// hyperlinks in the PR comment so reviewers can click through to the spec sources.
+// Maps a recognised spec framework to the repo directory holding its spec/plan
+// documents. Used to build hyperlinks in the PR comment so reviewers can click
+// through to the spec sources. Only frameworks with a known, verified convention
+// are listed here — unrecognised frameworks render as plain text.
+//
+// - OpenSpec:    https://github.com/Fission-AI/OpenSpec
+// - Kiro:        https://kiro.dev/docs/specs/
+// - Superpowers: https://github.com/obra/superpowers
 const FRAMEWORK_SPEC_DIRS: Record<string, string> = {
   openspec: 'openspec/specs',
   kiro: '.kiro/specs',
-  superpowers: '.claude/skills',
-  generic: 'specs',
+  superpowers: 'docs/superpowers/plans',
 };
 
 function renderFrameworkLink(framework: string, repoFullName?: string, headRef?: string): string {

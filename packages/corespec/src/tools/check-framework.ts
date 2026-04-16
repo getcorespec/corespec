@@ -25,12 +25,19 @@ const patterns: FrameworkPattern[] = [
     },
   },
   {
+    // Superpowers plans/specs live under docs/superpowers/ per obra/superpowers
+    // convention. Avoid matching on .claude/skills/ — that directory is present
+    // for any Claude Code plugin, not just superpowers.
     framework: 'superpowers',
     check: (root) => {
       const signals: FrameworkSignal[] = [];
-      const skillsDir = join(root, '.claude', 'skills');
-      if (existsSync(skillsDir) && statSync(skillsDir).isDirectory()) {
-        signals.push({ signal: '.claude/skills/ directory', framework: 'superpowers', path: '.claude/skills/' });
+      const plansDir = join(root, 'docs', 'superpowers', 'plans');
+      if (existsSync(plansDir) && statSync(plansDir).isDirectory()) {
+        signals.push({ signal: 'docs/superpowers/plans/ directory', framework: 'superpowers', path: 'docs/superpowers/plans/' });
+      }
+      const specsDir = join(root, 'docs', 'superpowers', 'specs');
+      if (existsSync(specsDir) && statSync(specsDir).isDirectory()) {
+        signals.push({ signal: 'docs/superpowers/specs/ directory', framework: 'superpowers', path: 'docs/superpowers/specs/' });
       }
       return signals;
     },
@@ -47,32 +54,6 @@ const patterns: FrameworkPattern[] = [
       const specsDir = join(root, '.kiro', 'specs');
       if (existsSync(specsDir) && statSync(specsDir).isDirectory()) {
         signals.push({ signal: '.kiro/specs/ directory', framework: 'kiro', path: '.kiro/specs/' });
-      }
-      return signals;
-    },
-  },
-  {
-    framework: 'generic',
-    check: (root) => {
-      const signals: FrameworkSignal[] = [];
-      const specsDir = join(root, 'specs');
-      if (existsSync(specsDir) && statSync(specsDir).isDirectory()) {
-        signals.push({ signal: 'specs/ directory', framework: 'generic', path: 'specs/' });
-      }
-      const docsSpecsDir = join(root, 'docs', 'specs');
-      if (existsSync(docsSpecsDir) && statSync(docsSpecsDir).isDirectory()) {
-        signals.push({ signal: 'docs/specs/ directory', framework: 'generic', path: 'docs/specs/' });
-      }
-      for (const name of safeReaddir(root)) {
-        const fullPath = join(root, name);
-        if (statSync(fullPath).isDirectory()) {
-          for (const file of safeReaddir(fullPath)) {
-            if (file.match(/\.spec\.md$/) || file.match(/\.requirements\.md$/)) {
-              const relPath = join(name, file);
-              signals.push({ signal: `${relPath} spec file`, framework: 'generic', path: relPath });
-            }
-          }
-        }
       }
       return signals;
     },

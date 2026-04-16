@@ -13,13 +13,17 @@ fi
 HEAD_REF=$(jq -r '.pull_request.head.ref // empty' "$GITHUB_EVENT_PATH" 2>/dev/null || true)
 HEAD_REF="${HEAD_REF:-${GITHUB_REF_NAME:-main}}"
 
-# Maps a framework name to the repo directory holding its specs.
+# Maps a recognised spec framework to the repo directory holding its spec/plan
+# documents. Only frameworks with a known, verified convention are listed;
+# others render as plain text in the comment.
+#   OpenSpec:    https://github.com/Fission-AI/OpenSpec
+#   Kiro:        https://kiro.dev/docs/specs/
+#   Superpowers: https://github.com/obra/superpowers
 framework_spec_dir() {
   case "$1" in
     openspec) echo "openspec/specs" ;;
     kiro) echo ".kiro/specs" ;;
-    superpowers) echo ".claude/skills" ;;
-    generic) echo "specs" ;;
+    superpowers) echo "docs/superpowers/plans" ;;
     *) echo "" ;;
   esac
 }

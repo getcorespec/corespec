@@ -31,9 +31,9 @@ describe('checkFramework', () => {
     expect(result.signals.some(s => s.framework === 'openspec')).toBe(true);
   });
 
-  it('detects superpowers skills directory', () => {
-    mkdirSync(join(tempDir, '.claude', 'skills'), { recursive: true });
-    writeFileSync(join(tempDir, '.claude', 'skills', 'test.md'), '# Skill');
+  it('detects superpowers via docs/superpowers/plans directory', () => {
+    mkdirSync(join(tempDir, 'docs', 'superpowers', 'plans'), { recursive: true });
+    writeFileSync(join(tempDir, 'docs', 'superpowers', 'plans', '2026-04-15-foo.md'), '# Plan');
 
     const result = checkFramework(tempDir);
 
@@ -41,14 +41,13 @@ describe('checkFramework', () => {
     expect(result.signals.some(s => s.framework === 'superpowers')).toBe(true);
   });
 
-  it('detects generic specs directory', () => {
-    mkdirSync(join(tempDir, 'specs'), { recursive: true });
-    writeFileSync(join(tempDir, 'specs', 'auth.spec.md'), '# Auth Spec');
+  it('does not report superpowers from a bare .claude/skills directory (any plugin)', () => {
+    mkdirSync(join(tempDir, '.claude', 'skills'), { recursive: true });
+    writeFileSync(join(tempDir, '.claude', 'skills', 'test.md'), '# Skill');
 
     const result = checkFramework(tempDir);
 
-    expect(result.candidates).toContain('generic');
-    expect(result.signals.some(s => s.signal.includes('specs/'))).toBe(true);
+    expect(result.candidates).not.toContain('superpowers');
   });
 
   it('detects kiro config', () => {
@@ -72,8 +71,8 @@ describe('checkFramework', () => {
   it('detects multiple frameworks', () => {
     mkdirSync(join(tempDir, 'openspec'), { recursive: true });
     writeFileSync(join(tempDir, 'openspec', 'spec.md'), '# Spec');
-    mkdirSync(join(tempDir, '.claude', 'skills'), { recursive: true });
-    writeFileSync(join(tempDir, '.claude', 'skills', 'test.md'), '# Skill');
+    mkdirSync(join(tempDir, 'docs', 'superpowers', 'plans'), { recursive: true });
+    writeFileSync(join(tempDir, 'docs', 'superpowers', 'plans', 'p.md'), '# Plan');
 
     const result = checkFramework(tempDir);
 

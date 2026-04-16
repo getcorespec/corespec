@@ -6,7 +6,7 @@ Defines how specguard presents coverage results in GitHub PR comments and check-
 ## Requirements
 
 ### Requirement: Framework name is rendered as a hyperlink when recognised
-When the detected framework has a known spec directory (e.g. `openspec` → `openspec/specs`), the PR comment and check-run output SHALL render the framework name as a markdown hyperlink pointing to that directory on the PR's head ref. This lets reviewers click through to the actual spec sources being evaluated against.
+When the detected framework has a verified spec directory convention (e.g. `openspec` → `openspec/specs`), the PR comment and check-run output SHALL render the framework name as a markdown hyperlink pointing to that directory on the PR's head ref. This lets reviewers click through to the actual spec sources being evaluated against. Only frameworks whose directory convention has been verified against their canonical project are recognised — the mapping SHALL NOT guess paths for unknown frameworks.
 
 #### Scenario: OpenSpec framework on a PR
 - **WHEN** the framework is `openspec`
@@ -14,12 +14,15 @@ When the detected framework has a known spec directory (e.g. `openspec` → `ope
 - **THEN** the comment SHALL contain `**Framework:** [openspec](https://github.com/getcorespec/corespec/tree/feature/x/openspec/specs)`
 
 #### Scenario: Unknown or no framework
-- **WHEN** the framework is `none` or lacks a known spec directory
+- **WHEN** the framework is `none` or not in the recognised mapping
 - **THEN** the framework SHALL appear as plain text, not a hyperlink
 
 #### Scenario: Framework directory mapping
-- **WHEN** the framework is one of: `openspec`, `kiro`, `superpowers`, `generic`
-- **THEN** the link SHALL target `openspec/specs`, `.kiro/specs`, `.claude/skills`, or `specs` respectively
+- **WHEN** the framework is one of the recognised set
+- **THEN** the link SHALL target:
+  - `openspec` → `openspec/specs` ([Fission-AI/OpenSpec](https://github.com/Fission-AI/OpenSpec))
+  - `kiro` → `.kiro/specs` ([kiro.dev](https://kiro.dev/docs/specs/))
+  - `superpowers` → `docs/superpowers/plans` ([obra/superpowers](https://github.com/obra/superpowers))
 
 ### Requirement: Coverage table includes a Reason column for every file
 The coverage table in PR comments and check-run outputs SHALL have columns `File`, `Score`, `Status`, `Reason`. Every row — passing or failing — SHALL display the per-file `reason` returned by `judgeDiff`.

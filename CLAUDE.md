@@ -76,20 +76,29 @@ On TTY output, the CLI sets the terminal title to the invoked subcommand (e.g. `
 
 ## Terminal screenshots
 
-### Inventory — which file shows what
+### Inventory — which file shows what, and which tool captures it
+
+Two kinds of screenshots, two different tools. Don't mix them up.
+
+**Terminal screenshots** — captured with `toolkit:shellwright`:
 
 | File | Shows | Refresh when |
 |------|-------|--------------|
 | `packages/specguard/docs/screenshots/specguard-check-fail.png` | `specguard check main..HEAD` output, failing case, with per-file `Reason` lines under each failing row | CLI output format changes (columns, colours, reason text) |
-| `packages/specguard/docs/screenshots/failed-pr.png` | GitHub PR screenshot showing the specguard check failing + its PR comment | PR comment format changes (framework hyperlink, Reason column) |
-| `packages/bot/docs/screenshots/bot-pr-comment.png` | PR comment with the coverage table: framework name rendered as a markdown hyperlink, `File / Score / Status / Reason` columns, reasons populated for passing rows too | `formatPrComment` output changes |
-| `packages/bot/docs/screenshots/bot-check-run.png` | GitHub check-run "Details" view produced by `formatCheckRunOutput` | Check-run text changes |
 | `packages/respec/docs/screenshots/respec-generate.png` | `respec generate` CLI output | respec CLI changes |
+
+**GitHub UI screenshots** — captured with playwright (or the Chrome MCP) against a real PR on `getcorespec/corespec`:
+
+| File | Shows | Refresh when |
+|------|-------|--------------|
+| `packages/specguard/docs/screenshots/failed-pr.png` | The PR files view with the red `check` status + specguard comment rendered in GitHub's chrome | PR comment format changes (framework hyperlink, Reason column) |
+| `packages/bot/docs/screenshots/bot-pr-comment.png` | PR comment produced by `formatPrComment`: framework name as a markdown hyperlink, `File / Score / Status / Reason` columns, reasons populated for passing rows | `formatPrComment` output changes |
+| `packages/bot/docs/screenshots/bot-check-run.png` | GitHub check-run "Details" view produced by `formatCheckRunOutput` | Check-run text changes |
 | `packages/respec/docs/screenshots/respec-pr.png` | PR produced by respec | respec PR behaviour changes |
 
 Target width in README is 420px. Always verify the new PNG renders cleanly at that width before committing.
 
-### Capture setup
+### Terminal capture (shellwright)
 
 Use `make install` (or `pnpm -r build && npm link`) first so the global `specguard` / `respec` bins are current — this makes the prompt read like an end-user flow, and the CLI sets its terminal title (`specguard check`, etc.) automatically on TTY.
 
@@ -99,13 +108,22 @@ Minimal prompt with no path or git info:
 export PS1='$ '
 ```
 
-Use `toolkit:shellwright` to capture the session:
+Flow via `toolkit:shellwright`:
 
 1. `shell_start` to open a recording shell in the iTerm window where you'll demo.
 2. `shell_record_start` with a meaningful name (e.g. `specguard-check-fail`).
 3. Run the command you want to capture.
 4. `shell_record_stop` — this writes the PNG.
 5. Move the file into the matching `packages/*/docs/screenshots/` folder, overwriting the old PNG with the same filename so READMEs don't need relinking.
+
+### GitHub UI capture (playwright)
+
+For the GitHub UI shots, browse to a real PR that exercises the feature, then use the playwright MCP (`mcp__playwright__browser_navigate`, `mcp__playwright__browser_take_screenshot`). Suggested targets:
+
+- `bot-pr-comment.png` / `failed-pr.png` — any recent PR on `getcorespec/corespec` where the specguard app posted a comment with the current format (Framework hyperlink + Reason column). Scroll the comment into view before capture.
+- `bot-check-run.png` — the "Details" page of the specguard check on the same PR.
+
+Take the screenshot as a clipped element (not full page) so the README rendering at 420px stays legible.
 
 ### Reproducing a failing `specguard check` without a real API call
 

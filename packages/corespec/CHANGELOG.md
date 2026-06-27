@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/getcorespec/corespec/compare/corespec-v0.0.3...corespec-v0.0.4) (2026-04-16)
+
+
+### Features
+
+* pre-push hook + specguard reporting improvements ([#22](https://github.com/getcorespec/corespec/issues/22)) ([37f68f9](https://github.com/getcorespec/corespec/commit/37f68f967a99bbe2636ac4c913a5ee18676fc13b))
+
 ## [0.0.3](https://github.com/getcorespec/corespec/compare/corespec-v0.0.2...corespec-v0.0.3) (2026-04-03)
 
 

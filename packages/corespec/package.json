@@ -1,6 +1,6 @@
 {
   "name": "@getcorespec/corespec",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Shared spec tooling foundation — framework detection, LLM integration, common utilities",
   "keywords": [
     "corespec",
